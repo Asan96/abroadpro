@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from view.login import login_load
-from view.news import news_load
+from view.news import news_load, edit_news, draft_news, note_news, push_news
 from view.communicate import communicate_load
 from view.transaction import transaction_load
 from view.problem import problem_load
@@ -34,12 +34,32 @@ urlpatterns = [
     url(r'^send_verify_msg/$', login_load.send_verify_msg, name='send_verify_msg'),
     url(r'^check_verify_msg/$', login_load.check_verify_msg, name='check_verify_msg'),
     url(r'^modify_password/$', login_load.modify_password, name='modify_password'),
+
+
+
     # 投稿专栏
     url(r'^news/$', news_load.load_news_page, name='load_news_page'),
+    # 编辑文章
+    url(r'^news/edit$', edit_news.load_edit_page, name='load_edit_page'),
+    # 我的草稿
+    url(r'^news/draft$', draft_news.load_draft_page, name='load_draft_page'),
+    # 我的推送
+    url(r'^news/push$', push_news.load_push_page, name='load_push_page'),
+    # 注意事项
+    url(r'^news/note$', note_news.load_note_page, name='load_note_page'),
+
+
+
     # 社交专栏
     url(r'^communicate/$', communicate_load.load_communicate_page, name='load_communicate_page'),
+
+
+
     # 交易专栏
     url(r'^transaction/$', transaction_load.load_transaction_page, name='load_transaction_page'),
+
+
+
     # 疑难解答
     url(r'^problem/$', problem_load.load_problem_page, name='load_problem_page'),
 

@@ -1,0 +1,24 @@
+/*
+菜单栏 样式
+*/
+.menu_div{
+    background-color: #80bdff;
+    position:absolute;
+    padding-top: 0px;
+    float: left;
+    width: 200px;
+    height: 100%;
+    /*border:1px solid #008800;*/
+}
+
+/*
+*菜单栏 字体样式
+*/
+.text_li{
+    text-align: center;
+    border:1px solid #c4e3f3;
+    border-right:none;
+}
+.text_brand{
+    font-size: medium;
+}

@@ -12,29 +12,46 @@
 {% block css %}
     <link rel="shortcut icon" type="image/x-icon" href="{% static "picture/login/favicon.ico" %}" />
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap.css" %}">
-    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap4.3.1.css" %}">
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-datetimepicker.css" %}">
+    <link rel="stylesheet" href="{% static "css/public/public_style.css" %}">
 {% endblock %}
 {% block style %}
 {% endblock %}
 <body>
 {% block navigation %}
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin: initial;">
-        <ul class="navbar-nav">
-            {% for info in operations %}
-                {% if info.url %}
-                    <div>
-                        <li class="nav-item" style="padding-right: 60px">
-                            <a class="nav-link" href="{{ info.url }}">
-                                <h3>
+    <nav class="navbar navbar-inverse" role="navigation" style="margin: initial">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">海外留学交流平台</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    {% for info in operations %}
+                        {% if info.url %}
+                            <li class="" style="padding-right: 60px">
+                                <a class="" href="{{ info.url }}">
                                     {{ info.operation_cn }}
-                                </h3>
-                            </a>
-                        </li>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </ul>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {#                    <li class="dropdown">#}
+                    {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+                    {#                            Java <b class="caret"></b>#}
+                    {#                        </a>#}
+                    {#                        <ul class="dropdown-menu">#}
+                    {#                            <li><a href="#">jmeter</a></li>#}
+                    {#                            <li><a href="#">EJB</a></li>#}
+                    {#                            <li><a href="#">Jasper Report</a></li>#}
+                    {#                            <li class="divider"></li>#}
+                    {#                            <li><a href="#">分离的链接</a></li>#}
+                    {#                            <li class="divider"></li>#}
+                    {#                            <li><a href="#">另一个分离的链接</a></li>#}
+                    {#                        </ul>#}
+                    {#                    </li>#}
+                </ul>
+            </div>
+        </div>
     </nav>
 {% endblock %}
 {% block content %}
@@ -43,7 +60,6 @@
 {% block js %}
     <script src="{% static "web/plugin/js/jquery-3.3.1.min.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap.min.js" %}"></script>
-    <script src="{% static "web/plugin/js/bootstrap4.3.1.js" %}"></script>
     <script src="{% static "web/plugin/js/sweetalert.min.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap-datetimepicker.js" %}"></script>
 {% endblock %}
