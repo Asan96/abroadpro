@@ -25,8 +25,10 @@ import views
 
 urlpatterns = [
     url(r'^admin/$', admin.site.urls),
-    # 首页
+    # 模板继承页
     url(r'^base/$', views.load_base_page),
+    # 首页
+    url(r'^home/$', views.load_home_page),
     # 登陆注册
     url(r'^login/$', login_load.login_page_load),
     url(r'^login_verify/$', login_load.login_verify, name='login_verify'),

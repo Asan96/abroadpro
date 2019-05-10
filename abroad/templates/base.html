@@ -10,6 +10,7 @@
     {% endblock %}
 </head>
 {% block css %}
+    {% load static %}
     <link rel="shortcut icon" type="image/x-icon" href="{% static "picture/login/favicon.ico" %}" />
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap.css" %}">
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-datetimepicker.css" %}">
@@ -22,7 +23,7 @@
     <nav class="navbar navbar-inverse" role="navigation" style="margin: initial">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">海外留学交流平台</a>
+                <a class="navbar-brand" href="../home">海外留学交流平台</a>
             </div>
             <div>
                 <ul class="nav navbar-nav">
@@ -54,7 +55,13 @@
         </div>
     </nav>
 {% endblock %}
-{% block content %}
+{% block menu %}
+{% endblock %}
+<div style="padding-left: 200px">
+    {% block content %}
+    {% endblock %}
+</div>
+{% block home %}
 {% endblock %}
 </body>
 {% block js %}

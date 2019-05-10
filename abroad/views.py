@@ -9,3 +9,8 @@ from models import *
 def load_base_page(request):
     operations = Operating.objects.values()
     return render(request, "base.html", locals())
+
+@csrf_exempt
+def load_home_page(request):
+    operations = Operating.objects.values()
+    return render(request, "home/home.html", locals())
