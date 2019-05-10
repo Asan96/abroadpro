@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>
+            {% block title_name %}导航栏{% endblock %}
+        </title>
+    {% endblock %}
+</head>
+{% block css %}
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "picture/login/favicon.ico" %}" />
+    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap4.3.1.css" %}">
+    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-datetimepicker.css" %}">
+{% endblock %}
+{% block style %}
+{% endblock %}
+<body>
+{% block navigation %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin: initial;">
+        <ul class="navbar-nav">
+            {% for info in operations %}
+                {% if info.url %}
+                    <div>
+                        <li class="nav-item" style="padding-right: 60px">
+                            <a class="nav-link" href="{{ info.url }}">
+                                <h3>
+                                    {{ info.operation_cn }}
+                                </h3>
+                            </a>
+                        </li>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}
+{% block content %}
+{% endblock %}
+</body>
+{% block js %}
+    <script src="{% static "web/plugin/js/jquery-3.3.1.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap4.3.1.js" %}"></script>
+    <script src="{% static "web/plugin/js/sweetalert.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap-datetimepicker.js" %}"></script>
+{% endblock %}
+{% block script %}
+{% endblock %}
+</html>

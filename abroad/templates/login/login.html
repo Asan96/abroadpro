@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "picture/login/favicon.ico" %}" />
+    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap.css" %}">
+    <style>
+        #div_login{
+            position:absolute;
+            top:50%;
+            left:50%;
+            margin:-150px 0 0 -200px;
+            width:400px;
+            height:300px;
+            {#border:1px solid #008800;#}
+        }
+        .div_login_info{
+            padding-bottom: 10px;
+            padding-top: 0px;
+        }
+        .swal-modal {
+            background-color: skyblue;
+            border: 3px solid white;
+        }
+        .swal-title {
+            margin: 0px;
+            font-size: 16px;
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+            margin-bottom: 28px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="div_login">
+    <div class="col-lg-3">
+        <div class="panel panel-primary" style="width: 300px">
+            <div class="panel-heading" >
+                <h3 class="panel-title" style="text-align:center;">海外留学交流平台</h3>
+            </div>
+            <div class="pawnel-body">
+                <div class="form-group has-feedback" >
+                    <input type="text" class=" form-control" id="user_id"
+                           placeholder="账号">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" >
+                    <input type="password" class=" form-control"  id="password"
+                           placeholder="密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div style="padding-bottom: 1px;padding-top: -1px;">
+                    <a id="href_register">注册账号</a>
+                    <div style="float: right">
+                        <a id="href_modify_password">忘记密码</a>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <button type="button" class="btn btn-primary" id="btn_login" style="width: 270px">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="mod_register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center">注册</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+                        <input type="text" class=" form-control" style="width: 200px" id="register_id"
+                               placeholder="账号长度为 2-8 位">
+                    </div>
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+                        <input type="password" class=" form-control" style="width: 200px" id="first_password"
+                               placeholder="密码长度为 6-16 位">
+                    </div>
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">确认密码</span>
+                        <input type="password" class=" form-control" style="width: 200px" id="second_password"
+                               placeholder="两次输入密码必须相同">
+                    </div>
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</span>
+                        <input type="text" class=" form-control" style="width: 200px" id="register_name"
+                               placeholder="昵称长度为 2-8 位">
+                    </div>
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span>
+                        <select class="form-control" style="width: 200px" id="register_sex">
+                            <option value="">请选择</option>
+                            <option value="1">男</option>
+                            <option value="0">女</option>
+                        </select>
+                    </div>
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">出生日期</span>
+                        <input type="date" class=" form-control" style="width: 200px" id="register_birth"
+                               placeholder="">
+                    </div>
+                    <div class="input-group div_login_info">
+                        <span class="input-group-addon">电子邮箱</span>
+                        <input type="email" class=" form-control" style="width: 200px" id="register_email"
+                               placeholder="邮箱用于找回密码">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_submit">注册</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="mod_modify_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">密码找回</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group div_login_info" style="width: 250px;">
+                    <input type="text" class=" form-control" id="modify_user_id"
+                           placeholder="请输入要找回的账号">
+                </div>
+                <div class="input-group div_login_info" style="width: 250px;">
+                    <input type="email" class=" form-control"  id="modify_email"
+                           placeholder="请输入验证邮箱">
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning" type="button" id="btn_verify">发送验证码</button>
+                    </span>
+                </div>
+                <div class="input-group div_login_info" style="width: 250px;">
+                    <input type="text" class=" form-control" id="modify_msg"
+                           placeholder="请输入验证码">
+                </div>
+                <div class="input-group div_login_info" style="width: 250px;">
+                    <input type="password" class=" form-control"  id="modify_first_password"
+                           placeholder="请输入6-16位新密码">
+                </div>
+                <div class="input-group div_login_info" style="width: 250px;">
+                    <input type="password" class=" form-control"  id="modify_second_password"
+                           placeholder="请再次输入确认密码">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_modify_password">修改密码</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+<script>
+    let PUB_URL ={
+        "dataUser": "/abroad/login_verify/",
+        "dataRegister": "/abroad/login_register/",
+        "dataSendVerify": "/abroad/send_verify_msg/",
+        "dataCheckVerify": "/abroad/check_verify_msg/",
+        "dataModifyPassword": "/abroad/modify_password/",
+    }
+</script>
+    <script src="{% static "web/plugin/js/jquery-3.3.1.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/sweetalert.min.js" %}"></script>
+    <script src="{% static "js/login/login_load.js" %}"></script>
+</html>
