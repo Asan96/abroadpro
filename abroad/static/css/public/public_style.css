@@ -2,7 +2,7 @@
 菜单栏 样式
 */
 .menu_div{
-    background-color: #76c4ff;
+    background-color: #fff3cd;
     position:absolute;
     padding-top: 0px;
     float: left;
@@ -17,11 +17,15 @@
 */
 .text_li{
     text-align: center;
-    border:1px solid #c4e3f3;
+    border:1px solid #c0c0c0;
     border-right:none;
+    border-left:none;
 }
 .text_brand{
     font-size: 18px;
+}
+.text_color{
+    color: #4e555b;
 }
 /*
 首页轮播图样式
