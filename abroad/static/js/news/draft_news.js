@@ -69,6 +69,7 @@ function table_init(table){
                     success : function(data) {
                         if (data.ret){
                             alert_msg(data.msg);
+                            $(table).bootstrapTable('refresh');
                             $('#modal_draft').modal('hide');
                         }else{
                             alert_msg(data.msg)
@@ -138,18 +139,6 @@ function table_init(table){
                 valign: 'middle',
             },
             {
-                field: 'create_time',
-                title: '推送时间',
-                align: 'center',
-                valign: 'middle',
-            },
-            {
-                field: 'update_time',
-                title: '更新时间',
-                align: 'center',
-                valign: 'middle',
-            },
-            {
                 field: 'article',
                 title: '文章内容',
                 align: 'center',
@@ -162,6 +151,18 @@ function table_init(table){
                     }
                 },
                 formatter:show_formatter
+            },
+            {
+                field: 'create_time',
+                title: '保存时间',
+                align: 'center',
+                valign: 'middle',
+            },
+            {
+                field: 'update_time',
+                title: '更新时间',
+                align: 'center',
+                valign: 'middle',
             },
             {
                 field: 'price',

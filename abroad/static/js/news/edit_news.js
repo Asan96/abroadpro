@@ -5,13 +5,22 @@ function getParams(){
         'article': $('#edit_article').val(),
     };
     if (params['title'] === ''){
-        alert_msg('文章标题不得为空')
+        alert_msg('文章标题不得为空');
+        return ''
+    }else if (params['title'].length>50){
+        alert_msg('标题过长，长度应小于五十字！');
         return ''
     }else if (params['keyword'] === ''){
-        alert_msg('文章关键词不得为空！')
+        alert_msg('文章关键词不得为空！');
+        return ''
+    }else if (params['keyword'].length>50){
+        alert_msg('关键词过长，长度应小于五十字！');
+        return ''
+    }else if (params['article'].length>50000){
+        alert_msg('内容过长，长度应小于五万字！');
         return ''
     }else if (params['article']=== ''){
-        alert_msg('文章内容不得为空！')
+        alert_msg('文章内容不得为空！');
         return ''
     }
     else
@@ -28,7 +37,6 @@ $('#save_btn').click(function () {
             dataType : "json",
             data : params,
             success : function(data) {
-                console.log(data)
                 if (data.ret){
                     alert_msg(data.msg)
                     input_clear();

@@ -45,6 +45,7 @@ class EditNews:
             'push': '1',
             'save': '0',
         }
+        self.now = timezone.now()
 
     def news_save(self, user_id, params,  state_key):
         title = params['title']
@@ -56,11 +57,11 @@ class EditNews:
             return {'ret': False, 'msg': '文章标题已存在'}
         elif state == '0':
             self.newsObj.create(user_id=user_id, title=title, keyword=keyword, article=article, state=state,
-                                create_time=timezone.now(), update_time=timezone.now())
+                                create_time=self.now, update_time=self.now)
             return {'ret': True, 'msg': '文章保存成功'}
         elif state == '1':
             self.newsObj.create(user_id=user_id, title=title, keyword=keyword, article=article, state=state,
-                                create_time=timezone.now(), update_time=timezone.now())
+                                create_time=self.now, update_time=self.now, push_time=self.now)
             return {'ret': True, 'msg': '文章发布成功'}
 
     def my_article(self, user_id, state_key):
@@ -75,6 +76,7 @@ class EditNews:
                 'article': new.article,
                 'create_time': time_format(new.create_time),
                 'update_time': time_format(new.update_time),
+                'push_time': time_format(new.push_time),
             }
             info_lst.append(new_info_dic)
         return len(info_lst), info_lst
@@ -107,7 +109,7 @@ class EditNews:
                 'title': new.title,
                 'keyword': new.keyword,
                 'article': new.article,
-                'update_time': time_format(new.update_time),
+                'push_time': time_format(new.push_time),
             }
             news_lst.append(new_info_dic)
         return len(news_lst), news_lst
@@ -127,8 +129,9 @@ class EditNews:
             'title': params['title'],
             'keyword': params['keyword'],
             'article': params['article'],
+            'update_time': self.now,
         }
-        existObj = self.newsObj.filter(title=news_dic['title'])
+        existObj = self.newsObj.filter(title=news_dic['title']).exclude(id=news_id)
         if not news_dic['title']:
             return {'ret': False, 'msg': '标题不得为空！'}
         elif existObj:
@@ -146,7 +149,7 @@ class EditNews:
 
     def draft_submit(self, news_id):
         try:
-            self.newsObj.filter(id=news_id).update(state=self.state_dict['push'])
+            self.newsObj.filter(id=news_id).update(state=self.state_dict['push'], push_time=self.now)
             return {'ret': True, 'msg': '发布成功！'}
         except Exception, e:
             return {'ret': False, 'msg': '发布失败！'+str(e)}

@@ -59,7 +59,7 @@ function table_init(){
                 valign: 'middle',
             },
             {
-                field: 'update_time',
+                field: 'push_time',
                 title: '推送时间',
                 align: 'center',
                 valign: 'middle',

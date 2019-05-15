@@ -50,6 +50,7 @@ class News(models.Model):
     state = models.IntegerField()
     create_time = models.DateTimeField()
     update_time = models.DateTimeField()
+    push_time = models.DateTimeField()
 
     class Meta:
         db_table = 'news'
