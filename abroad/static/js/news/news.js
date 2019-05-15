@@ -33,20 +33,8 @@ function table_init(){
                 formatter:href_formatter
             },
             {
-                field: 'nickname',
-                title: '发布人',
-                align: 'center',
-                valign: 'middle',
-            },
-            {
                 field: 'keyword',
                 title: '关键词',
-                align: 'center',
-                valign: 'middle',
-            },
-            {
-                field: 'update_time',
-                title: '推送时间',
                 align: 'center',
                 valign: 'middle',
             },
@@ -63,6 +51,18 @@ function table_init(){
                         "white-space": "nowrap"
                     }
                 },
+            },
+            {
+                field: 'nickname',
+                title: '发布人',
+                align: 'center',
+                valign: 'middle',
+            },
+            {
+                field: 'update_time',
+                title: '推送时间',
+                align: 'center',
+                valign: 'middle',
             },
         ],
     });

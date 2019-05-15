@@ -3,6 +3,17 @@
 {% block title_name %}
     我的草稿
 {% endblock %}
+{% block style %}
+    <style>
+        .draft_modal_size{
+            width: 800px;
+            height: 100%;
+        }
+        .title_modal{
+            text-align: center
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading panel_title_format">
@@ -16,12 +27,49 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_draft" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog draft_modal_size">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title title_modal" id="myModalLabel">草稿修改</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group input_format">
+                        <span>
+                            <h5>标题： </h5>
+                        </span>
+                        <input type="text" class="form-control" id="draft_title" >
+                    </div>
+                    <div class="input-group input_format">
+                        <span>
+                            <h5>关键词：</h5>
+                        </span>
+                        <input type="text" class="form-control" id="draft_keyword">
+                    </div>
+                    <div class="input-group input_format">
+                        <span>
+                            <h5>内容：</h5>
+                        </span>
+                        <textarea class=" textarea_format" id="draft_article" style="overflow-y:scroll"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btn_modify_save">提交更改</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 {% endblock %}
 {% block script %}
     <script>
         let PUB_URL ={
             "dataDraftTable": "/abroad/draft_table_init/",
             "dataDeletePush": "/abroad/delete_my_draft/",
+            "dataLoadDraft": "/abroad/load_original_draft/",
+            "dataModifySave": "/abroad/draft_modify_save/",
+            "dataDraftSubmit": "/abroad/draft_submit/",
         }
     </script>
     <script src="{% static "js/news/draft_news.js" %}"></script>

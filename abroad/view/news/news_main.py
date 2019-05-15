@@ -85,6 +85,7 @@ class EditNews:
             return {'ret': True, 'msg': '删除成功！'}
         except Exception, e:
             return {'ret': False, 'msg': '删除失败！'+str(e)}
+
     def news_table_init(self, title, nickname, keyword):
         news_lst = []
         search_dict = {
@@ -111,6 +112,44 @@ class EditNews:
             news_lst.append(new_info_dic)
         return len(news_lst), news_lst
 
+    def draft_load(self, news_id):
+        new = self.newsObj.filter(id=news_id).first()
+        new_dic = {
+            'id': new.id,
+            'title': new.title,
+            'keyword': new.keyword,
+            'article': new.article
+        }
+        return new_dic
+    def draft_save(self, params):
+        news_id = params['news_id']
+        news_dic = {
+            'title': params['title'],
+            'keyword': params['keyword'],
+            'article': params['article'],
+        }
+        existObj = self.newsObj.filter(title=news_dic['title'])
+        if not news_dic['title']:
+            return {'ret': False, 'msg': '标题不得为空！'}
+        elif existObj:
+            return {'ret': False, 'msg': '标题已重复！'}
+        elif not news_dic['keyword']:
+            return {'ret': False, 'msg': '关键词不得为空！'}
+        elif not news_dic['article']:
+            return {'ret': False, 'msg': '内容不得为空！'}
+        else:
+            try:
+                self.newsObj.filter(id=news_id).update(**news_dic)
+                return {'ret': True, 'msg': '草稿保存成功！'}
+            except Exception, e:
+                return {'ret': False, 'msg': '保存失败！'+str(e)}
+
+    def draft_submit(self, news_id):
+        try:
+            self.newsObj.filter(id=news_id).update(state=self.state_dict['push'])
+            return {'ret': True, 'msg': '发布成功！'}
+        except Exception, e:
+            return {'ret': False, 'msg': '发布失败！'+str(e)}
 
 # 保存草稿
 @csrf_exempt
@@ -178,3 +217,24 @@ def news_table_init(request):
     total, rows = EditNews().news_table_init(title, nickname, keyword)
     row_lst = rows[offset:offset+limit]
     return HttpResponse(json.dumps({'total': total, 'rows': row_lst}))
+
+# 原草稿加载
+@csrf_exempt
+def load_original_draft(request):
+    news_id = request.POST.get('news_id')
+    new_dic = EditNews().draft_load(news_id)
+    return HttpResponse(json.dumps(new_dic), content_type='application/json')
+
+# 保存草稿修改
+@csrf_exempt
+def draft_modify_save(request):
+    params = request.POST.dict()
+    result = EditNews().draft_save(params)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+# 草稿发布
+@csrf_exempt
+def draft_submit(request):
+    news_id = request.POST.get('news_id')
+    result = EditNews().draft_submit(news_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')

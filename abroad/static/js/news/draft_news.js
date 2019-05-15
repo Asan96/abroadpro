@@ -34,6 +34,74 @@ function table_init(table){
                     } else {
                     }
                 });
+        },
+        'click #btn_modify':function (e, value, row, index) {
+            let news_id = row.id;
+            $.ajax({
+                type : "POST",
+                url : PUB_URL.dataLoadDraft,
+                dataType : "json",
+                data : {'news_id':news_id},
+                success : function(data) {
+                    if (data.id){
+                      $('#draft_title').val(data.title);
+                      $('#draft_keyword').val(data.keyword);
+                      $('#draft_article').val(data.article);
+                    }
+                },
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert_msg(XMLHttpRequest.status+" "+textStatus+" "+errorThrown)
+                }
+            });
+            $('#modal_draft').modal('show');
+            $('#btn_modify_save').unbind().click(function () {
+                let params = {
+                    'news_id':news_id,
+                    'title': $('#draft_title').val(),
+                    'keyword': $('#draft_keyword').val(),
+                    'article': $('#draft_article').val(),
+                };
+                $.ajax({
+                    type : "POST",
+                    url : PUB_URL.dataModifySave,
+                    dataType : "json",
+                    data : params,
+                    success : function(data) {
+                        if (data.ret){
+                            alert_msg(data.msg);
+                            $('#modal_draft').modal('hide');
+                        }else{
+                            alert_msg(data.msg)
+                        }
+                    },
+                    error : function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert_msg(XMLHttpRequest.status+" "+textStatus+" "+errorThrown)
+                    }
+                });
+            })
+        },
+        'click #btn_submit':function (e, value, row, index) {
+            let news_id = row.id;
+            $.ajax({
+                type : "POST",
+                url : PUB_URL.dataDraftSubmit,
+                dataType : "json",
+                data : {'news_id':news_id},
+                success : function(data) {
+                    if (data.ret){
+                        alert_msg(data.msg);
+                        $(table).bootstrapTable('remove', {
+                            field: 'title',
+                            values: [row.title]
+                        });
+                    } else{
+                        alert_msg(data.msg)
+                    }
+                },
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert_msg(XMLHttpRequest.status+" "+textStatus+" "+errorThrown)
+                }
+            });
         }
     };
     $(table).bootstrapTable({
@@ -98,7 +166,7 @@ function table_init(table){
             {
                 field: 'price',
                 title: '操作',
-                width: 160,
+                width: 200,
                 align: 'center',
                 valign: 'middle',
                 formatter:operateFormatter,
@@ -120,6 +188,7 @@ function operateFormatter(value, row, index) {
         '<div class="btn-group">',
         '<button id="btn_delete" type="button" class="btn btn-warning">删除</button>',
         '<button id="btn_modify" type="button" class="btn btn-default" style="">修改</button>',
+        '<button id="btn_submit" type="button" class="btn btn-dark" style="">发布</button>',
         '</div>'
     ].join('');
 }

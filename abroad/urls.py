@@ -49,6 +49,9 @@ urlpatterns = [
     url(r'^draft/$', news_main.load_draft_page, name='load_draft_page'),
     url(r'^draft_table_init/$', news_main.my_draft, name='draft_table_init'),
     url(r'^delete_my_draft/$', news_main.delete_my_draft, name='delete_my_draft'),
+    url(r'^load_original_draft/$', news_main.load_original_draft, name='load_original_draft'),  # 加载原草稿
+    url(r'^draft_modify_save/$', news_main.draft_modify_save, name='draft_modify_save'),  # 保存草稿修改
+    url(r'^draft_submit/$', news_main.draft_submit, name='draft_submit'),  # 草稿推送
     # 我的推送
     url(r'^push/$', news_main.load_push_page, name='load_push_page'),
     url(r'^push_table_init/$', news_main.my_push, name='push_table_init'),

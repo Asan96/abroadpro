@@ -91,3 +91,8 @@
     padding-left: 20px;
     padding-top: 10px
 }
+/**
+*/
+.table_col_line>tbody>tr>td{
+    border:0px;
+    }
