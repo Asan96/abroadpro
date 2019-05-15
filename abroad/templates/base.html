@@ -10,10 +10,10 @@
     {% endblock %}
 </head>
 {% block css %}
-    {% load static %}
     <link rel="shortcut icon" type="image/x-icon" href="{% static "picture/login/favicon.ico" %}" />
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap.css" %}">
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-datetimepicker.css" %}">
+    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-table.min.css" %}">
     <link rel="stylesheet" href="{% static "css/public/public_style.css" %}">
 {% endblock %}
 {% block style %}
@@ -65,10 +65,19 @@
 {% endblock %}
 </body>
 {% block js %}
+    <script>
+        function alert_msg(msg){
+            swal(msg, {
+                button: false,
+            });
+}
+    </script>
     <script src="{% static "web/plugin/js/jquery-3.3.1.min.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap.min.js" %}"></script>
     <script src="{% static "web/plugin/js/sweetalert.min.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap-datetimepicker.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap-table.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap-table-zh-CN.min.js" %}"></script>
 {% endblock %}
 {% block script %}
 {% endblock %}

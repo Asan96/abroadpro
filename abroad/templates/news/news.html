@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title_name %}
     投稿专栏
 {% endblock %}
@@ -7,26 +8,26 @@
         <ul class="nav sidebar-nav">
             <li class="sidebar-brand text_li text_brand">
                 <a href="../news" class="text_color">
-                    投稿专栏
+                    文章浏览
                 </a>
             </li>
             <li class="text_li">
-                <a href="edit">
+                <a href="../edit">
                      <span class="text_color glyphicon glyphicon-pencil"> 编辑文章</span>
                 </a>
             </li>
             <li class="text_li">
-                <a href="push">
+                <a href="../push">
                     <span class="text_color glyphicon glyphicon-upload"> 我的推送</span>
                 </a>
             </li>
             <li class="text_li">
-                <a href="draft">
+                <a href="../draft">
                     <span class="text_color glyphicon glyphicon-list-alt"> 我的草稿</span>
                 </a>
             </li>
             <li class="text_li">
-                <a href="note">
+                <a href="../note">
                     <span class="text_color glyphicon glyphicon-info-sign" style="text-align: center"> 注意事项</span>
                 </a>
             </li>
@@ -42,4 +43,45 @@
 {#            </li>#}
         </ul>
     </nav>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-info">
+        <div class="panel-heading panel_title_format">
+            <h3 class="panel-title">文章浏览</h3>
+        </div>
+        <div class="panel-body" style="height: 660px;">
+            <div class="input-group">
+                <div class="input-group input_article" style="padding-left: 0px">
+                    <span class="input-group-addon">标 题 </span>
+                    <input type="text" class="form-control" style="width: 200px;" id="title_search">
+                </div>
+
+                <div class="input-group input_article">
+                    <span class="input-group-addon">发 布 人 </span>
+                    <input type="text" class="form-control" style="width: 200px" id="nickname_search">
+                </div>
+                <div class="input-group input_article">
+                    <span class="input-group-addon">关 键 词 </span>
+                    <input type="text" class="form-control" style="width: 200px" id="keyword_search">
+                </div>
+                <div class="input-group input_article">
+                    <button class="btn btn-warning" style="width: 80px" id="btn_search">搜 索 </button>
+                </div>
+                <div class="input-group input_article">
+                    <button class="btn btn-danger" id="btn_clear">清除条件</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <table id="table_news" class="table table-dark article_table"></table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        let PUB_URL ={
+            "dataNewsTable": "/abroad/news_table_init/",
+        }
+    </script>
+    <script src="{% static "js/news/news.js" %}"></script>
 {% endblock %}

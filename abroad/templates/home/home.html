@@ -8,6 +8,9 @@
         }
     </style>
 {% endblock %}
+{% block user %}
+    <input type="text" hidden="hidden" value="{{ user_id }}">
+{% endblock %}
 {% block home %}
     <div id="myCarousel" class="carousel slide" style="height:560px;">
         <!-- 轮播（Carousel）指标 -->

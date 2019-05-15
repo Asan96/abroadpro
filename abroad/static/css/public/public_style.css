@@ -7,8 +7,8 @@
     padding-top: 0px;
     float: left;
     width: 200px;
-    height: 100%;
-    border-right: 1px solid black;
+    height: 700px;
+    border-right: none;
     /*border:1px solid #008800;*/
 }
 
@@ -33,4 +33,61 @@
 .carousel_picture{
     width: 100%;
     height: 500px;
+}
+
+/**
+投稿
+*/
+.panel_title_format{
+    text-align: center;
+}
+.panel_body_format{
+    height: 660px;
+    padding-left: 20%;
+    padding-top: 30px;
+}
+.edit_div{
+    height: 100%;
+    width: 80%;
+    background-color: #fcf8e3;
+}
+.edit_table_div{
+    height: 100%;
+    width: 80%;
+}
+.article_panel_body_format{
+    height: 660px;
+    padding-left: 5%;
+    padding-top: 30px;
+}
+.article_table_div{
+    height: 80%;
+    width: 95%;
+}
+.input_format{
+    width: 90%;
+    padding-left: 50px;
+}
+.textarea_format{
+    width: 100%;
+    height: 350px;
+}
+.btn_format{
+    padding-top: 20px;
+    float: right;
+}
+/*
+* 设置列宽由表格宽度和列宽度设定
+*/
+.article_table{
+    table-layout: fixed;
+}
+
+/*
+* 文章浏览 输入框组
+*/
+.input_article{
+    float: left;
+    padding-left: 20px;
+    padding-top: 10px
 }

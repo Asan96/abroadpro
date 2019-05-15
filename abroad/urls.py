@@ -17,14 +17,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from view.login import login_load
-from view.news import news_load, edit_news, draft_news, note_news, push_news
+from view.news import news_load, news_main
 from view.communicate import communicate_load
 from view.transaction import transaction_load
 from view.problem import problem_load
 import views
 
 urlpatterns = [
-    url(r'^admin/$', admin.site.urls),
     # 模板继承页
     url(r'^base/$', views.load_base_page),
     # 首页
@@ -41,16 +40,23 @@ urlpatterns = [
 
     # 投稿专栏
     url(r'^news/$', news_load.load_news_page, name='load_news_page'),
+    url(r'^news_table_init/$', news_main.news_table_init, name='news_table_init'),
     # 编辑文章
-    url(r'^news/edit$', edit_news.load_edit_page, name='load_edit_page'),
+    url(r'^edit/$', news_main.load_edit_page, name='load_edit_page'),
+    url(r'^edit_news_save/$', news_main.edit_news_save, name='edit_news_save'),  # 保存草稿
+    url(r'^edit_news_submit/$', news_main.edit_news_submit, name='edit_news_submit'),  # 发布文章
     # 我的草稿
-    url(r'^news/draft$', draft_news.load_draft_page, name='load_draft_page'),
+    url(r'^draft/$', news_main.load_draft_page, name='load_draft_page'),
+    url(r'^draft_table_init/$', news_main.my_draft, name='draft_table_init'),
+    url(r'^delete_my_draft/$', news_main.delete_my_draft, name='delete_my_draft'),
     # 我的推送
-    url(r'^news/push$', push_news.load_push_page, name='load_push_page'),
+    url(r'^push/$', news_main.load_push_page, name='load_push_page'),
+    url(r'^push_table_init/$', news_main.my_push, name='push_table_init'),
+    url(r'^delete_my_push/$', news_main.delete_my_push, name='delete_my_push'),
     # 注意事项
-    url(r'^news/note$', note_news.load_note_page, name='load_note_page'),
-
-
+    url(r'^note/$', news_main.load_note_page, name='load_note_page'),
+    # 浏览文章
+    url(r'^browsing/$', news_load.load_browsing_page, name='load_browsing_page'),
 
     # 社交专栏
     url(r'^communicate/$', communicate_load.load_communicate_page, name='load_communicate_page'),

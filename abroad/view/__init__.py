@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import smtplib
 import os
+import datetime
 # import smtplib
 #
 #
@@ -104,3 +105,10 @@ if __name__ == '__main__':
             'coding': 'utf-8'
         }
     ).send()
+
+def time_format(date):
+    if date:
+        format_time = (date+datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S")
+        return format_time
+    else:
+        return ''

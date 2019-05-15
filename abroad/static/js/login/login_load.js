@@ -17,7 +17,7 @@ $('#btn_login').click(function () {
         data : params,
         success : function(data) {
             if (data.ret){
-                alert_msg(data.msg)
+                location.href ='abroad/home'
             } else {
                 alert_msg(data.msg)
             }

@@ -1,0 +1,49 @@
+{% extends 'news/news.html' %}
+{% load static %}
+{% block title_name %}
+    注意事项
+{% endblock %}
+{% block style %}
+    <style>
+        .span_font_title{
+            font-size: 22px;
+        }
+        .p_font_keyword{
+            font-size: 18px;
+            display:inline;
+        }
+        .p_font_nickname{
+            font-size: 17px;
+            display:inline;
+            padding-right: 20px;
+        }
+        .span_font_color{
+            color: #0069d9;
+        }
+        .span_font_article{
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading panel_title_format">
+            <span class="span_font_title">{{ new.title }}</span>
+        </div>
+        <div class="panel-body">
+            <div style="text-align: center">
+                <p class="p_font_keyword">
+                    <span class="span_font_color">关 键 词：</span>
+                    {{ new.keyword }}
+                </p>
+            </div>
+            <article class="span_font_article">{{ new.article }}</article>
+            <div style="text-align: right">
+                <p class="p_font_nickname">
+                    <span class="span_font_color">发 布 人：</span>
+                    {{ nickname }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

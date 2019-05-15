@@ -1,31 +1,7 @@
 {% extends 'news/news.html' %}
+{% load static %}
 {% block title_name %}
     编辑文章
-{% endblock %}
-{% block style %}
-    <style>
-        .panel_title_format{
-            text-align: center;
-        }
-        .panel_body_format{
-            height: 700px;
-            padding-left: 250px;
-            padding-top: 30px;
-        }
-        .edit_div{
-            height: 600px;
-            width: 800px;
-            background-color: #fcf8e3;
-        }
-        .input_format{
-            width: 700px;
-            padding-left: 50px;
-        }
-        .textarea_format{
-            width: 650px;
-            height: 350px;
-        }
-    </style>
 {% endblock %}
 {% block content %}
     <div class="panel panel-default">
@@ -39,24 +15,35 @@
                         <span>
                             <h5>标题： </h5>
                         </span>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="edit_title" >
                     </div>
                     <div class="input-group input_format">
                         <span>
                             <h5>关键词：</h5>
                         </span>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="edit_keyword" placeholder="请填写文章关键词 便于搜索">
                     </div>
                     <div class="input-group input_format">
                         <span>
                             <h5>内容：</h5>
                         </span>
-                        <textarea class="input-group textarea_format">
-
-                        </textarea>
+                        <textarea class=" textarea_format" id="edit_article" style="overflow-y:scroll"></textarea>
+                    </div>
+                    <div class="input-group btn_format">
+                        <button class="btn btn-default" id="save_btn">保存草稿</button>&nbsp;
+                        <button class="btn btn-default" id="submit_btn">发布</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        let PUB_URL ={
+            "dataEditSave": "/abroad/edit_news_save/",
+            "dataEditSubmit": "/abroad/edit_news_submit/",
+        }
+    </script>
+    <script src="{% static "js/news/edit_news.js" %}"></script>
 {% endblock %}
