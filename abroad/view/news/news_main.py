@@ -11,31 +11,6 @@ from abroad.view import time_format
 
 import json
 
-# 编辑文章
-@login_required
-@csrf_exempt
-def load_edit_page(request):
-    operations = Operating.objects.values()
-    return render(request, "news/edit_news.html", locals())
-
-# 我的推送
-@login_required
-@csrf_exempt
-def load_push_page(request):
-    operations = Operating.objects.values()
-    return render(request, "news/push_news.html", locals())
-
-# 注意事项
-@csrf_exempt
-def load_note_page(request):
-    operations = Operating.objects.values()
-    return render(request, "news/note_news.html", locals())
-
-# 我的草稿
-@csrf_exempt
-def load_draft_page(request):
-    operations = Operating.objects.values()
-    return render(request, "news/draft_news.html", locals())
 
 class EditNews:
     def __init__(self):

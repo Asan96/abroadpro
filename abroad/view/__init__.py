@@ -112,3 +112,10 @@ def time_format(date):
         return format_time
     else:
         return ''
+
+def date_format(date):
+    if date:
+        format_time = (date+datetime.timedelta(hours=8)).strftime("%Y-%m-%d")
+        return format_time
+    else:
+        return ''

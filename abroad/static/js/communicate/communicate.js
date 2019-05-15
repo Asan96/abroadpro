@@ -1,17 +1,14 @@
-let table = '#table_news'
+let table = '#table_communicate';
 table_init();
 function table_init(){
     $(table).bootstrapTable({
-        url: PUB_URL.dataNewsTable,
+        url: PUB_URL.dataCommunicateTable,
         method: 'post',
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         queryParams: function (params) {
             return {
                 limit: params.limit, // 每页要显示的数据条数
                 offset: params.offset, // 每页显示数据的开始行号
-                title_search: $('#title_search').val(),
-                nickname_search : $('#nickname_search').val(),
-                keyword_search : $('#keyword_search').val(),
             }
         },
         toolbar: "#toolbar",
@@ -26,21 +23,20 @@ function table_init(){
         sortable: true, // 是否启用排序
         columns: [
             {
-                field: 'title',
-                title: '文章标题',
-                align: 'center',
-                valign: 'middle',
-                formatter:href_formatter
-            },
-            {
-                field: 'keyword',
-                title: '关键词',
+                field: 'from_nickname',
+                title: '发信人昵称',
                 align: 'center',
                 valign: 'middle',
             },
             {
-                field: 'article',
-                title: '文章内容',
+                field: 'from_username',
+                title: '发信人账号',
+                align: 'center',
+                valign: 'middle',
+            },
+            {
+                field: 'message',
+                title: '留言内容',
                 align: 'center',
                 valign: 'middle',
                 formatter:show_formatter,
@@ -53,38 +49,42 @@ function table_init(){
                 },
             },
             {
-                field: 'nickname',
-                title: '发布人',
+                field: 'type',
+                title: '类型',
                 align: 'center',
                 valign: 'middle',
             },
             {
-                field: 'push_time',
-                title: '推送时间',
+                field: 'create_time',
+                title: '发送时间',
                 align: 'center',
                 valign: 'middle',
+            },
+            {
+                field: 'state',
+                title: '状态',
+                align: 'center',
+                valign: 'middle',
+            },
+            {
+                field: 'operate',
+                title: '',
+                align: 'center',
+                width: 100,
+                valign: 'middle',
+                formatter:href_formatter
             },
         ],
     });
 }
-function href_formatter(value,row,index) {
-    let title = value;
-    let nickname = row.nickname;
-    let href = '../browsing_news?title='+title+'&nickname='+nickname
-    console.log(href)
-    return '<a href='+href+'>'+title+'</a>'
-};
 function show_formatter(value,row,index) {
     let span=document.createElement('span');
     span.setAttribute('title',value);
     span.innerHTML = value;
     return span.outerHTML;
 }
-$('#btn_search').click(function () {
-    $(table).bootstrapTable('refresh')
-});
-$('#btn_clear').click(function () {
-    $('#title_search').val('');
-    $('#nickname_search').val('');
-    $('#keyword_search').val('');
-});
+function href_formatter(value,row,index) {
+    let msg_id = row.msg_id;
+    let href = '../browsing_message?msg_id='+msg_id;
+    return '<a href='+href+'>查看</a>'
+};

@@ -165,7 +165,7 @@ function table_init(table){
                 valign: 'middle',
             },
             {
-                field: 'price',
+                field: 'operate',
                 title: '操作',
                 width: 200,
                 align: 'center',

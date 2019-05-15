@@ -1,0 +1,81 @@
+{% extends 'communicate/communicate.html' %}
+{% load static %}
+{% block title_name %}
+    留言
+{% endblock %}
+{% block style %}
+    <style>
+        .span_font_title{
+            font-size: 20px;
+        }
+        .p_font_keyword{
+            font-size: 16px;
+            display:inline;
+        }
+        .p_font_nickname{
+            font-size: 17px;
+            display:inline;
+            padding-right: 20px;
+        }
+        .span_font_color{
+            color: #0069d9;
+        }
+        .span_font_article{
+            font-size: 16px;
+            text-align: center;
+        }
+        .div_text_left{
+            text-align: left;
+        }
+        .div_text_right{
+            text-align: right;
+        }
+        .div_btn_location{
+            float: right;
+            padding-top: 20px;
+            padding-right: 20px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <input type="hidden" id="input_msg_type" value="{{ msgObj.type }}">
+    <input type="hidden" id="input_msg_state" value="{{ msgObj.state }}">
+    <input type="hidden" id="input_msg_id" value="{{ msgObj.id }}">
+    <input type="hidden" id="input_from_user_id" value="{{ msgObj.from_user_id }}">
+    <div class="panel panel-default">
+        <div class="panel-heading panel_title_format">
+            <span class="span_font_title">留言内容</span>
+        </div>
+        <div class="panel-body">
+            <div class="div_text_left">
+                <p class="p_font_keyword">
+                    <span class="span_font_color">时间：</span>
+                    {{ create_time }}
+                </p>
+            </div>
+            <article class="span_font_article">{{ msgObj.message }}</article>
+            <div class="div_text_right">
+                <p class="p_font_nickname">
+                    <span class="span_font_color">发 信 人：</span>
+                    {{ nickname }}
+                </p>
+            </div>
+            <div hidden="hidden" id="btn_div">
+                <div class="input-group div_btn_location">
+                    <button class="btn btn-warning" id="btn_agree"> 同 意 </button>
+                </div>
+                <div class="input-group div_btn_location">
+                    <button class="btn btn-danger" id="btn_disagree"> 拒 绝 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        let PUB_URL ={
+            "dataCheckFriend": "/abroad/communicate_table_init/",
+        }
+    </script>
+    <script src="{% static "js/communicate/browsing_message.js" %}"></script>
+{% endblock %}

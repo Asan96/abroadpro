@@ -54,3 +54,24 @@ class News(models.Model):
 
     class Meta:
         db_table = 'news'
+
+
+class Relationship(models.Model):
+    user_id = models.IntegerField()
+    friend_id = models.IntegerField()
+    create_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'relationship'
+
+
+class Message(models.Model):
+    from_user_id = models.IntegerField()
+    to_user_id = models.IntegerField()
+    message = models.CharField(max_length=400)
+    state = models.CharField(max_length=1)
+    type = models.CharField(max_length=1)
+    create_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'message'
