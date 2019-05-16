@@ -90,6 +90,7 @@ class CommunicateManage:
                 'from_username': from_user['username'],
                 'from_nickname': from_user['nickname'],
                 'create_time': time_format(msg.create_time),
+                'read_time': time_format(msg.read_time),
                 'message': msg.message,
                 'state': self.state_cn_dic[msg.state],
                 'type': self.type_cn_dic[msg.type],
@@ -103,6 +104,9 @@ class CommunicateManage:
         check_num = int(params['check_num'])
         msg_id = params['msg_id']
         from_user_id = params['from_user_id']
+        relationExistObj = self.relationshipObj.filter(Q(user_id=user_id,friend_id=from_user_id) | Q(user_id=from_user_id, friend_id=from_user_id))
+        if relationExistObj:
+            return {'ret': False, 'msg': '该用户，已经是您的好友！'}
         if check_num:
             relation1_dic = {
                 'user_id': user_id,
@@ -115,8 +119,8 @@ class CommunicateManage:
                 'create_time': self.now,
             }
             try:
-                self.relationshipObj.create(relation1_dic)
-                self.relationshipObj.create(relation2_dic)
+                self.relationshipObj.create(**relation1_dic)
+                self.relationshipObj.create(**relation2_dic)
                 self.messageObj.filter(id=msg_id).update(state=self.state_dic['read'])
                 return {'ret': True, 'msg': '同意好友申请成功！'}
             except Exception, e:

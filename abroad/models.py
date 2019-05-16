@@ -72,6 +72,7 @@ class Message(models.Model):
     state = models.CharField(max_length=1)
     type = models.CharField(max_length=1)
     create_time = models.DateTimeField()
+    read_time = models.DateTimeField()
 
     class Meta:
         db_table = 'message'

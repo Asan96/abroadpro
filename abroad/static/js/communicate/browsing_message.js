@@ -27,9 +27,11 @@ function checkFriend(check_num) {
         url: PUB_URL.dataCheckFriend,
         success: function (data) {
             if (data.ret){
-                alert_msg(data.msg)
+                alert_msg(data.msg);
+                $('#btn_div').hide()
             }else{
-                alert_msg(data.msg)
+                alert_msg(data.msg);
+                $('#btn_div').hide()
             }
         }
     });
