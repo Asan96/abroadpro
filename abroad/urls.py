@@ -20,7 +20,7 @@ from view.login import login_load
 from view.news import news_load, news_main
 from view.communicate import communicate_load, communicate_main
 from view.transaction import transaction_load
-from view.problem import problem_load
+from view.problem import problem_load, problem_main
 import views
 
 urlpatterns = [
@@ -88,12 +88,24 @@ urlpatterns = [
 
 
 
+    # 问答专栏
+    url(r'^problem/$', problem_load.load_problem_page, name='load_problem_page'),
+    url(r'^question_table_init/$', problem_main.question_table_init, name='question_table_init'),
+    url(r'^answer_question/$', problem_main.answer_question, name='answer_question'),
+    # 我的问题
+    url(r'^my_question/$', problem_load.load_my_question_page, name='my_question'),
+    url(r'^raise_question/$', problem_main.raise_question, name='raise_question'),  # 提出问题
+    url(r'^my_question_table_init/$', problem_main.my_question_table_init, name='my_question_table_init'),  # 我的问题表
+    url(r'^my_question_child_table_init/$', problem_main.my_question_child_table_init, name='my_question_child_table_init'),  # 问题子表
+    url(r'^delete_question/$', problem_main.delete_question, name='delete_question'),  # 删除问题
+    # 我的回答
+    url(r'^my_answer/$', problem_load.load_my_answer_page, name='my_answer'),
+    # 注意事项
+    url(r'^note_problem/$', problem_load.load_note_problem_page, name='note_problem'),
+
     # 交易专栏
     url(r'^transaction/$', transaction_load.load_transaction_page, name='load_transaction_page'),
 
 
-
-    # 疑难解答
-    url(r'^problem/$', problem_load.load_problem_page, name='load_problem_page'),
 
 ]

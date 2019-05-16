@@ -130,3 +130,7 @@ function getSelection() {
         return row.user_id
     });
 }
+
+$('#modal_send_message').on('hide.bs.modal', function () {
+    $('#text_message').val('')
+});

@@ -23,9 +23,7 @@ function table_init(){
                                     swal(data.msg, {
                                         icon: "success",
                                     });
-                                    $(table).bootstrapTable('remove', {
-                                        field: 'message',
-                                        values: [row.message]
+                                    $(table).bootstrapTable('refresh', {
                                     });
                                 }else{
                                     alert_msg(data.msg)
@@ -60,7 +58,7 @@ function table_init(){
         sidePagination: "server",
         pageSize: 10,
         pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
-        height:500,
+        height:450,
         pagination: true, // 是否分页
         sortable: true, // 是否启用排序
         columns: [
@@ -118,7 +116,7 @@ function table_init(){
             },
             {
                 field: 'operate',
-                title: '',
+                title: '查看',
                 align: 'center',
                 width: 100,
                 valign: 'middle',
@@ -126,7 +124,7 @@ function table_init(){
             },
             {
                 field: 'delete',
-                title: '',
+                title: '删除',
                 align: 'center',
                 width: 100,
                 valign: 'middle',

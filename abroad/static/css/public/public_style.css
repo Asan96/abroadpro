@@ -129,3 +129,10 @@
     padding-left: 0px;
     padding-top: 10px
 }
+
+/*
+    问题专栏面板
+*/
+.problem_panel_height{
+    height: 660px;
+}

@@ -76,3 +76,25 @@ class Message(models.Model):
 
     class Meta:
         db_table = 'message'
+
+
+class Question(models.Model):
+    user_id = models.IntegerField()
+    question = models.CharField(max_length=400)
+    state = models.CharField(max_length=1)
+    create_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'question'
+
+
+class Answer(models.Model):
+    question_id = models.IntegerField()
+    user_id = models.IntegerField()
+    like_num = models.IntegerField()
+    create_time = models.DateTimeField()
+    is_best = models.CharField(max_length=1)
+    answer = models.CharField(max_length=400)
+
+    class Meta:
+        db_table = 'answer'
