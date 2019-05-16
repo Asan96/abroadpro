@@ -38,9 +38,14 @@
         <div class="panel-body" style="height: 660px;">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    查 询 条 件
+                    <h4 class = "panel-title">
+                        <a data-toggle = "collapse"  data-parent = "#acordord" href ="#collapseOne" style="color: red">
+                            查 询 条 件, 点 击 展 开
+                        </a >
+                    </h4 >
                 </div>
-                <div class="panel-body">
+                <div id = "collapseOne"  class = "panel-collapse collapse" >
+                    <div class="panel-body">
                     <div class="input-group">
                         <div class="input-group input_article" style="padding-left: 0px">
                             <span class="input-group-addon">发 信 人 </span>
@@ -74,6 +79,7 @@
                             <button class="btn btn-danger" id="btn_clear">清 除 条 件</button>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
             <div class="input-group">
