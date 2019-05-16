@@ -68,17 +68,22 @@ urlpatterns = [
     url(r'^communicate/$', communicate_load.load_communicate_page, name='load_communicate_page'),
     # 留言板
     url(r'^communicate_table_init/$', communicate_main.communicate_table_init, name='communicate_table_init'),
+    url(r'^delete_message/$', communicate_main.delete_message, name='delete_message'),  # 删除留言
     # 添加好友
     url(r'^add_friend/$', communicate_load.load_add_friend_page, name='add_friend'),
     url(r'^search_user/$', communicate_main.search_user, name='search_user'),  # 查找用户
     url(r'^add_friend_msg/$', communicate_main.add_friend_msg, name='add_friend_msg'),  # 查找用户
     # 我的好友
     url(r'^my_friend/$', communicate_load.load_my_friend_page, name='my_friend'),
-    # 好友管理
-    url(r'^manage_friend/$', communicate_load.load_manage_friend_page, name='manage_friend'),
+    url(r'^my_friend_table_init/$', communicate_main.my_friend_table_init, name='my_friend_table_init'),  # 我的好友表
+    url(r'^send_message/$', communicate_main.send_message, name='send_message'),  # 发送留言
+    url(r'^delete_friend/$', communicate_main.delete_friend, name='delete_friend'),  # 删除好友
+    # 注意事项
+    url(r'^note_communicate/$', communicate_load.load_note_communicate_page, name='note_communicate'),
     # 浏览留言
     url(r'^browsing_message/$', communicate_load.load_browsing_page, name='browsing_message'),
     url(r'^check_friend/$', communicate_main.check_friend, name='check_friend'),   # 审核好友通知
+    url(r'^read_message/$', communicate_main.read_message, name='read_message'),   # 读留言
 
 
 

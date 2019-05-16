@@ -13,6 +13,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static "picture/login/favicon.ico" %}" />
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap.css" %}">
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-datetimepicker.css" %}">
+    <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-select.min.css" %}">
+    <link rel="stylesheet" href="{% static "web/plugin/css/daterangepicker.css" %}">
     <link rel="stylesheet" href="{% static "web/plugin/css/bootstrap-table.min.css" %}">
     <link rel="stylesheet" href="{% static "css/public/public_style.css" %}">
 {% endblock %}
@@ -36,20 +38,6 @@
                             </li>
                         {% endif %}
                     {% endfor %}
-                    {#                    <li class="dropdown">#}
-                    {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
-                    {#                            Java <b class="caret"></b>#}
-                    {#                        </a>#}
-                    {#                        <ul class="dropdown-menu">#}
-                    {#                            <li><a href="#">jmeter</a></li>#}
-                    {#                            <li><a href="#">EJB</a></li>#}
-                    {#                            <li><a href="#">Jasper Report</a></li>#}
-                    {#                            <li class="divider"></li>#}
-                    {#                            <li><a href="#">分离的链接</a></li>#}
-                    {#                            <li class="divider"></li>#}
-                    {#                            <li><a href="#">另一个分离的链接</a></li>#}
-                    {#                        </ul>#}
-                    {#                    </li>#}
                 </ul>
             </div>
         </div>
@@ -76,6 +64,10 @@
     <script src="{% static "web/plugin/js/bootstrap.min.js" %}"></script>
     <script src="{% static "web/plugin/js/sweetalert.min.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap-datetimepicker.js" %}"></script>
+    <script src="{% static "web/plugin/js/bootstrap-select.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/moment.min.js" %}"></script>
+    <script src="{% static "web/plugin/js/zh-cn.js" %}"></script>
+    <script src="{% static "web/plugin/js/daterangepicker.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap-table.min.js" %}"></script>
     <script src="{% static "web/plugin/js/bootstrap-table-zh-CN.min.js" %}"></script>
 {% endblock %}

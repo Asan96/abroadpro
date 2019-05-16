@@ -71,6 +71,7 @@
 .textarea_format{
     width: 100%;
     height: 350px;
+    overflow-y:scroll;
 }
 .btn_format{
     padding-top: 20px;
@@ -114,8 +115,17 @@
 /*
     添加好友
 */
-.add_friend_panel_body{
+.friend_panel_body{
     height: 90%;
     width: 80%;
-    background-color: #cdf1ff;
+    background-color: #fbfcfc;
+}
+
+/**
+ 我的好友输入框 按钮组
+*/
+.input_my_friend{
+    float: left;
+    padding-left: 0px;
+    padding-top: 10px
 }

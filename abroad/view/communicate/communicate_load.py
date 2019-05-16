@@ -38,9 +38,9 @@ def load_my_friend_page(request):
 
 @login_required
 @csrf_exempt
-def load_manage_friend_page(request):
+def load_note_communicate_page(request):
     operations, user_id, msg_count = public_params(request)
-    return render(request, "communicate/manage_friend.html", locals())
+    return render(request, "communicate/note_communicate.html", locals())
 
 
 @login_required

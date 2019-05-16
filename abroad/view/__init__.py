@@ -119,3 +119,14 @@ def date_format(date):
         return format_time
     else:
         return ''
+
+
+def daterange_format(daterange):
+    from datetime import datetime
+    if daterange:
+        date_lst = daterange.split('to')
+        start_date = datetime.strptime(date_lst[0].strip(), '%Y-%m-%d')
+        end_date = datetime.strptime(date_lst[1].strip(), '%Y-%m-%d')
+        return start_date, end_date
+    else:
+        return '', ''

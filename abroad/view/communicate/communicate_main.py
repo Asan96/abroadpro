@@ -80,9 +80,30 @@ class CommunicateManage:
             except Exception, e:
                 return {'ret': False, 'msg': '申请发送失败！'+str(e)}
 
-    def communicate_table_init(self, user_id):
+    def communicate_table_init(self, user_id, params):
         msg_lst = []
+        select_type = params['select_type']
+        select_state = params['select_state']
+        search_word = params['search_word']
+        sort = params.get('sort', '')
+        order = params.get('sortOrder', '')
+        daterange_str = params['daterange']
+        start_date, end_date = daterange_format(daterange_str)
         msgs = self.messageObj.filter(to_user_id=user_id)
+        if start_date and end_date:
+            msgs = msgs.filter(create_time__gte=start_date, create_time__lt=end_date)
+        if select_state:
+            msgs = msgs.filter(state=select_state)
+        if select_type:
+            msgs = msgs.filter(type=select_type)
+        if search_word:
+            search_uid_lit = self.userObj.filter(Q(nickname__icontains=search_word) | Q(username__icontains=search_word)).values_list('id', flat=True)
+            msgs = msgs.filter(from_user_id__in=search_uid_lit)
+        if sort:
+            if order == 'asc':
+                msgs = msgs.order_by(sort)
+            elif order == 'desc':
+                msgs = msgs.order_by('-'+sort)
         for msg in msgs:
             from_user = self.userObj.filter(id=msg.from_user_id).values('nickname', 'username').first()
             msg_dic = {
@@ -121,18 +142,75 @@ class CommunicateManage:
             try:
                 self.relationshipObj.create(**relation1_dic)
                 self.relationshipObj.create(**relation2_dic)
-                self.messageObj.filter(id=msg_id).update(state=self.state_dic['read'])
+                self.messageObj.filter(id=msg_id).update(state=self.state_dic['read'], read_time=self.now)
                 return {'ret': True, 'msg': '同意好友申请成功！'}
             except Exception, e:
                 return {'ret': False, 'msg': '出错了！'+str(e)}
         else:
             try:
-                self.messageObj.filter(id=msg_id).update(state=self.state_dic['read'])
+                self.messageObj.filter(id=msg_id).update(state=self.state_dic['read'], read_time=self.now)
                 return {'ret': False, 'msg': '已拒绝好友申请！'}
             except Exception, e:
                 return {'ret': False, 'msg': '出错了！'+str(e)}
 
+    def my_friend_table_init(self, user_id, search_word):
+        search_word = search_word.strip()
+        info_lst = []
+        friend_id_lst = self.relationshipObj.filter(user_id=user_id).values_list('friend_id', flat=True)
+        users = self.userObj.filter(id__in=friend_id_lst)
+        if search_word:
+            users = users.filter(Q(nickname__icontains=search_word) | Q(username__icontains=search_word))
+        for user in users:
+            info_dic = {
+                'user_id': user.id,
+                'username': user.username,
+                'nickname': user.nickname,
+            }
+            info_lst.append(info_dic)
+        return len(info_lst), info_lst
 
+    def send_message(self, message, friend_id, user_id):
+        if message.strip():
+            msg_dic = {
+                'from_user_id': user_id,
+                'to_user_id': friend_id,
+                'message': message,
+                'state': self.state_dic['unread'],
+                'type': self.type_dic['normal'],
+                'create_time': self.now,
+            }
+            try:
+                self.messageObj.create(**msg_dic)
+                return {'ret': True, 'msg': '留言发送成功！'}
+            except Exception, e:
+                return {'ret': False, 'msg': '出错了！'+str(e)}
+        else:
+            return {'ret': False, 'msg': '留言内容不得为空'}
+
+    def read_message(self, msg_id):
+        try:
+            self.messageObj.filter(id=msg_id).update(state=self.state_dic['read'], read_time=self.now)
+            return {'ret': True, 'msg': ''}
+        except Exception, e:
+            return {'ret': False, 'msg': '出错了！' + str(e)}
+
+    def delete_message(self, msg_id):
+        try:
+            self.messageObj.filter(id=msg_id).delete()
+            return {'ret': True, 'msg': ''}
+        except Exception, e:
+            return {'ret': False, 'msg': '出错了！' + str(e)}
+
+    def delete_friend(self, user_id_lst, my_id):
+        for user_id in user_id_lst:
+            try:
+                self.relationshipObj.filter(Q(friend_id=user_id, user_id=my_id) | Q(user_id=user_id, friend_id=my_id)).delete()
+                return {'ret': True, 'msg': '删除成功！'}
+            except Exception, e:
+                return {'ret': False, 'msg': '出错了！' + str(e)}
+
+
+# 查找用户
 @csrf_exempt
 def search_user(request):
     params = request.POST.dict()
@@ -144,26 +222,79 @@ def search_user(request):
     row_lst = rows[offset:offset+limit]
     return HttpResponse(json.dumps({'total': total, 'rows': row_lst}))
 
+
+# 添加好友
 @csrf_exempt
 def add_friend_msg(request):
     result = CommunicateManage().add_friend_msg(request)
     return HttpResponse(json.dumps(result), content_type='application/json')
 
+
+# 留言板列表
 @csrf_exempt
 def communicate_table_init(request):
     params = request.POST.dict()
     user_id = request.user.id
     limit = int(params['limit'])
     offset = int(params['offset'])
-    total, rows=CommunicateManage().communicate_table_init(user_id)
+    total, rows = CommunicateManage().communicate_table_init(user_id, params)
     row_lst = rows[offset:offset+limit]
     return HttpResponse(json.dumps({'total': total, 'rows': row_lst}))
 
 
+# 好友留言审核
 @csrf_exempt
 def check_friend(request):
     result = CommunicateManage().check_friend(request)
     return HttpResponse(json.dumps(result), content_type='application/json')
 
 
+# 我的好友列表
+@csrf_exempt
+def my_friend_table_init(request):
+    params = request.POST.dict()
+    limit = int(params['limit'])
+    offset = int(params['offset'])
+    user_id = request.user.id
+    search_word = params['search_word']
+    total, rows = CommunicateManage().my_friend_table_init(user_id, search_word)
+    row_lst = rows[offset:offset+limit]
+    return HttpResponse(json.dumps({'total': total, 'rows': row_lst}))
+
+
+# 发送留言
+@csrf_exempt
+def send_message(request):
+    params = request.POST.dict()
+    message = params['message']
+    friend_id = params['user_id']
+    user_id = request.user.id
+    result = CommunicateManage().send_message(message, friend_id, user_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+#  读留言
+@csrf_exempt
+def read_message(request):
+    msg_id = request.POST.get('msg_id')
+    result = CommunicateManage().read_message(msg_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+#  删除留言
+@csrf_exempt
+def delete_message(request):
+    msg_id = request.POST.get('msg_id')
+    result = CommunicateManage().delete_message(msg_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+# 删除好友
+@csrf_exempt
+def delete_friend(request):
+    user_id_lst = request.POST.get('user_id_lst')
+    user_id_lst = eval(user_id_lst)
+    my_id = request.user.id
+    result = CommunicateManage().delete_friend(user_id_lst, my_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
 
