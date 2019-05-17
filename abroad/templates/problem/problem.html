@@ -37,9 +37,38 @@
         <div class="panel-body" style="height: 660px;">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    查 询 条 件
+                    <h4 class = "panel-title" >
+                        <a data-toggle = "collapse"  data-parent = "#acordord" href ="#collapseOne" style="color: orangered">
+                            <span class="glyphicon glyphicon-th-list"> 查询条件</span>
+                        </a >
+                    </h4 >
                 </div>
-                <div class="panel-body">
+                <div id = "collapseOne"  class = "panel-collapse collapse" >
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <div class="input-group input_article" style="padding-left: 0px">
+                                <span class="input-group-addon"> 关 键 词 </span>
+                                <input type="text" class="form-control" style="width: 200px;" id="input_search_word"
+                                       placeholder="请输入问题关键词">
+                            </div>
+                            <div class="form-group input_article">
+                                <select class="selectpicker" data-style="btn btn-default" id="select_state">
+                                    <option value="" selected> 请选择回答状态 </option>
+                                    <option value="0"> 未 解 答 </option>
+                                    <option value="1"> 已 解 答 </option>
+                                </select>
+                            </div>
+                            <div class="input-group input_article">
+                                <button class="btn btn-warning" style="width: 80px" id="btn_search">搜 索 </button>
+                            </div>
+                            <div class="input-group input_article">
+                                <button class="btn btn-danger" id="btn_clear">清 除 条 件</button>
+                            </div>
+                            <div class="input-group input_article">
+                                <button class="btn btn-success" id="btn_refresh"> 刷 新 </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <table id="table_question" class="table table-striped article_table table_col_line"></table>
@@ -70,6 +99,7 @@
             "dataQuestionTableInit": "/abroad/question_table_init/",
             "dataAnswerQuestion": "/abroad/answer_question/",
             "dataMyQuestionChildTableInit": "/abroad/my_question_child_table_init/",
+            "dataAnswerLike": "/abroad/answer_like/",
         }
     </script>
     <script src="{% static "js/problem/problem.js" %}"></script>

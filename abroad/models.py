@@ -93,8 +93,15 @@ class Answer(models.Model):
     user_id = models.IntegerField()
     like_num = models.IntegerField()
     create_time = models.DateTimeField()
-    is_best = models.CharField(max_length=1)
     answer = models.CharField(max_length=400)
 
     class Meta:
         db_table = 'answer'
+
+
+class LikeAnswer(models.Model):
+    user_id = models.IntegerField()
+    answer_id = models.IntegerField()
+
+    class Meta:
+        db_table = 'like_answer'

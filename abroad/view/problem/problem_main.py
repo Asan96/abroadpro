@@ -17,21 +17,14 @@ class ProblemManage(object):
         self.questionObj = Question.objects
         self.answerObj = Answer.objects
         self.userObj = User.objects
+        self.likeObj = LikeAnswer.objects
         self.question_state_dic = {
             'unAnswer': '0',
             'answer': '1'
         }
-        self.is_best_dic = {
-            'notBest': '0',
-            'best': '1'
-        }
         self.question_cn_state_dic = {
             '0': '未解答',
             '1': '已解答'
-        }
-        self.is_best_cn_dic = {
-            '0' : '否',
-            '1' : '是'
         }
         self.now = timezone.now()
 
@@ -64,10 +57,21 @@ class ProblemManage(object):
             question_lst.append(question_dic)
         return len(question_lst), question_lst
 
-    def my_question_child_table_init(self, question_id):
+    def my_question_child_table_init(self, question_id, user_id, params):
         answer_lst = []
+        sort = params.get('sort', '')
+        order = params.get('sortOrder', '')
         answers = self.answerObj.filter(question_id=question_id)
+        if sort and order:
+            if order == 'desc':
+                answers = answers.order_by('-'+sort)
+            else:
+                answers = answers.order_by(sort)
         for answer in answers:
+            user_is_like = '0'
+            isLikeObj = self.likeObj.filter(answer_id=answer.id, user_id=user_id)
+            if isLikeObj:
+                user_is_like = '1'
             user = self.userObj.filter(id=answer.user_id).first()
             answer_dic = {
                 'answer_id': answer.id,
@@ -75,14 +79,16 @@ class ProblemManage(object):
                 'nickname': user.nickname,
                 'like_num': answer.like_num,
                 'create_time': time_format(answer.create_time),
-                'is_best': self.is_best_cn_dic[answer.is_best],
                 'answer': answer.answer,
+                'user_is_like': user_is_like,
             }
             answer_lst.append(answer_dic)
         return len(answer_lst), answer_lst
 
     def delete_question(self, question_id):
         try:
+            answer_id_lst = self.answerObj.filter(question_id=question_id).values('id')
+            self.likeObj.filter(answer_id__in=answer_id_lst).delete()
             self.answerObj.filter(question_id=question_id).delete()
             self.questionObj.filter(id=question_id).delete()
             return {'ret': True, 'msg': '删除成功！'}
@@ -93,9 +99,15 @@ class ProblemManage(object):
         question_lst = []
         limit = params['limit']
         offset = params['offset']
+        search_word = params['search_word']
+        state = params['state']
         sort = params.get('sort', '')
         order = params.get('sortOrder', '')
         questionObj = self.questionObj.exclude(user_id=user_id)
+        if state:
+            questionObj = questionObj.filter(state=state)
+        if search_word:
+            questionObj = questionObj.filter(question__icontains=search_word)
         if sort:
             if order == 'asc':
                 questionObj = questionObj.order_by(sort)
@@ -129,11 +141,60 @@ class ProblemManage(object):
             'user_id': user_id,
             'like_num': 0,
             'create_time': self.now,
-            'is_best': self.is_best_dic['notBest'],
             'answer': answer,
         }
+        self.questionObj.filter(id=question_id).update(state=self.question_state_dic['answer'])
         self.answerObj.create(**answer_dict)
         return {'ret': True, 'msg': '回答成功！'}
+
+    def answer_like(self, user_id, answer_id):
+        like_dic = {
+            'user_id': user_id,
+            'answer_id': answer_id,
+        }
+        answerObj = self.answerObj.filter(id=answer_id)
+        num = answerObj.first().like_num
+        likeExistObj = self.likeObj.filter(**like_dic)
+        if likeExistObj:
+            likeExistObj.delete()
+            num -= 1
+            result = {'ret': True, 'msg': '取消点赞成功！'}
+        else:
+            self.likeObj.create(**like_dic)
+            num += 1
+            result = {'ret': True, 'msg': '点赞成功！'}
+        answerObj.update(like_num=num)
+        return result
+
+    def browsing_question_answer_like(self, user_id, answer_id, is_like):
+        like_dic = {
+            'user_id': user_id,
+            'answer_id': answer_id,
+        }
+        likeExist = self.likeObj.filter(**like_dic)
+        answer = self.answerObj.filter(id=answer_id)
+        num = answer.first().like_num
+        if is_like == '1':
+            if not likeExist:
+                self.likeObj.create(**like_dic)
+                num += 1
+                answer.update(like_num=num)
+                return {'ret': True, 'msg': '点赞成功'}
+            else:
+                return {'ret': False, 'msg': '操作过快，请稍后'}
+        else:
+            if likeExist:
+                likeExist.delete()
+                num -= 1
+                answer.update(like_num=num)
+                return {'ret': True, 'msg': '取消点赞成功'}
+            else:
+                return {'ret': False, 'msg': '操作过快，请稍后'}
+
+
+
+
+
 # 提出问题
 @csrf_exempt
 def raise_question(request):
@@ -141,6 +202,7 @@ def raise_question(request):
     question = request.POST.get('question')
     result = ProblemManage().raise_question(user_id, question)
     return HttpResponse(json.dumps(result), content_type='application/json')
+
 
 # 我的问题表
 @csrf_exempt
@@ -157,8 +219,10 @@ def my_question_table_init(request):
 # 问题子表: 回答表
 @csrf_exempt
 def my_question_child_table_init(request):
+    user_id = request.user.id
+    params = request.POST.dict()
     question_id = request.POST.get('question_id')
-    total, rows = ProblemManage().my_question_child_table_init(question_id)
+    total, rows = ProblemManage().my_question_child_table_init(question_id, user_id, params)
     return HttpResponse(json.dumps({'total': total, 'rows': rows}))
 
 
@@ -190,8 +254,21 @@ def answer_question(request):
     return HttpResponse(json.dumps(result), content_type='application/json')
 
 
+# 点赞回答
+@csrf_exempt
+def answer_like(request):
+    user_id = request.user.id
+    answer_id = request.POST.get('answer_id')
+    result = ProblemManage().answer_like(user_id, answer_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
 
 
-
-
-
+# browsing点赞
+@csrf_exempt
+def browsing_question_answer_like(request):
+    user_id = request.user.id
+    params = request.POST.dict()
+    answer_id = params['answer_id']
+    is_like = params['is_like']
+    result = ProblemManage().browsing_question_answer_like(user_id, answer_id, is_like)
+    return HttpResponse(json.dumps(result), content_type='application/json')

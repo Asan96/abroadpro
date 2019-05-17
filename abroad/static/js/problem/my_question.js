@@ -1,4 +1,5 @@
 let table = '#table_my_question';
+let table_child = '';
 table_init();
 function table_init(){
     window.operateEvents = {
@@ -35,6 +36,24 @@ function table_init(){
                     } else {
                     }
                 });
+        }
+    };
+    window.operateEventsChild = {
+        'click #btn_like': function (e, value, row, index) {
+            let answer_id = row.answer_id;
+            $.ajax({
+                type: "post",
+                data: {'answer_id':answer_id},
+                dataType:'json',
+                url: PUB_URL.dataAnswerLike,
+                success: function (data) {
+                    if (data.ret){
+                        $(table_child).bootstrapTable('refresh')
+                    }else{
+                        alert_msg(data.msg)
+                    }
+                }
+            });
         }
     };
     $(table).bootstrapTable({
@@ -113,6 +132,7 @@ function table_init(){
     InitSubTable = function (index, row, $detail) {
         var questionId = row.question_id;
         var cur_table = $detail.html('<table class="table table-striped article_table table_col_line"></table>').find('table');
+        table_child = cur_table;
         $(cur_table).bootstrapTable({
             url: PUB_URL.dataMyQuestionChildTableInit,
             method: 'POST',
@@ -146,20 +166,25 @@ function table_init(){
                 align: 'center',
                 valign: 'middle',
             }, {
-                field: 'is_best',
-                title: '最佳答案',
-                align: 'center',
-                valign: 'middle',
-            },{
                 field: 'create_time',
                 title: '回答时间',
                 align: 'center',
                 valign: 'middle',
+                sortable: true,
             },{
                 field: 'like_num',
                 title: '点赞数',
                 align: 'center',
                 valign: 'middle',
+                sortable: true,
+            },{
+                field: 'like',
+                title: '点赞',
+                align: 'center',
+                width: 60,
+                valign: 'middle',
+                formatter:formatterLike,
+                events: operateEventsChild
             },
             ],
         });
@@ -198,4 +223,20 @@ function operateFormatter(value, row, index) {
         '<button id="btn_delete_question" type="button" class="btn btn-danger">删除</button>',
         '</div>'
     ].join('');
+}
+function formatterLike(value, row, index) {
+    let user_is_like = row.user_is_like;
+    if (user_is_like === '0'){
+        return [
+            '<div class="btn-group">',
+            '<button id="btn_like" type="button" class="btn btn-danger glyphicon glyphicon-heart"></button>',
+            '</div>'
+        ].join('');
+    }else if(user_is_like === '1'){
+        return [
+            '<div class="btn-group">',
+            '<button id="btn_like" type="button" class="btn btn-dark glyphicon glyphicon-heart-empty"></button>',
+            '</div>'
+        ].join('');
+    }
 }

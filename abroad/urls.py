@@ -92,6 +92,7 @@ urlpatterns = [
     url(r'^problem/$', problem_load.load_problem_page, name='load_problem_page'),
     url(r'^question_table_init/$', problem_main.question_table_init, name='question_table_init'),
     url(r'^answer_question/$', problem_main.answer_question, name='answer_question'),
+    url(r'^answer_like/$', problem_main.answer_like, name='answer_like'),
     # 我的问题
     url(r'^my_question/$', problem_load.load_my_question_page, name='my_question'),
     url(r'^raise_question/$', problem_main.raise_question, name='raise_question'),  # 提出问题
@@ -102,6 +103,13 @@ urlpatterns = [
     url(r'^my_answer/$', problem_load.load_my_answer_page, name='my_answer'),
     # 注意事项
     url(r'^note_problem/$', problem_load.load_note_problem_page, name='note_problem'),
+    # 浏览问题
+    url(r'^browsing_question/$', problem_load.load_browsing_question_page, name='browsing_question'),
+    url(r'^browsing_question_answer_like/$', problem_main.browsing_question_answer_like, name='browsing_question_answer_like'),  # 浏览问题点赞
+    # 浏览答案
+    url(r'^browsing_answer/$', problem_load.load_browsing_answer_page, name='browsing_answer'),
+
+
 
     # 交易专栏
     url(r'^transaction/$', transaction_load.load_transaction_page, name='load_transaction_page'),
