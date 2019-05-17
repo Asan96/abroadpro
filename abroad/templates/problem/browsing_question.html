@@ -5,13 +5,6 @@
 {% endblock %}
 {% block style %}
     <style>
-        .span_font_title{
-            font-size: 22px;
-        }
-        .p_font_keyword{
-            font-size: 18px;
-            display:inline;
-        }
         .p_font_nickname{
             font-size: 17px;
             display:inline;
@@ -73,7 +66,7 @@
                         <div style="text-align: right">
                             <p class="p_font_nickname">
                                 <span class="span_font_color">点赞数：</span>
-                                <span id="like_num{{ answer.id }}">{{ answer.like_num }}</span>
+                                <span id="like_num{{ answer.id }}" class="badge">{{ answer.like_num }}</span>
                             </p>
                             <p class="p_font_nickname">
                                 <span class="span_font_color">时间：</span>

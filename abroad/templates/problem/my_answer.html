@@ -3,15 +3,96 @@
 {% block title_name %}
     我的回答
 {% endblock %}
+{% block style %}
+    <style>
+        .p_font_nickname{
+            font-size: 17px;
+            display:inline;
+            padding-right: 20px;
+        }
+        .span_font_color{
+            color: #0069d9;
+        }
+        .span_font_article{
+            font-size: 16px;
+        }
+        .out_box{
+            height: 660px;
+            overflow-y: auto;
+        }
+    </style>
+{% endblock %}
 {% block content %}
-    <div class="panel panel-default">
-        <div class="panel-heading panel_title_format">
-            <h3 class="panel-title">我的回答</h3>
-        </div>
-        <div class="panel-body article_panel_body_format">
-            <div class="panel panel-default">
-                <table id="table_my_answer" class="table table-striped article_table table_col_line"></table>
+    <div class="out_box">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title panel_title_format">我的回答</h3>
+            </div>
+            <div class="panel-body" style="text-align: center" id="div_warning" hidden="hidden">
+                您没有回答过任何问题，回答问题后才可查看。
             </div>
         </div>
+        <input hidden="hidden" id="my_answer_count" value="{{ my_answer_count }}">
+        {% for my_answer in my_answer_lst %}
+            <div class="panel panel-info" id="panel{{ my_answer.answer_id }}">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a href="../browsing_question?question_id={{ my_answer.question_id }}">
+                            <span class="span_font_color">问 题：</span>
+                            {{ my_answer.question }}
+                        </a>
+                        <div style="text-align: right">
+                            <p class="p_font_nickname">
+                                <span class="span_font_color">时间：</span>
+                                {{ my_answer.create_time }}
+                            </p>
+                            <p class="p_font_nickname">
+                                <span class="span_font_color">提问人：</span>
+                                {{ my_answer.question_nickname }}
+                            </p>
+                        </div>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class = "panel-group" id = "accordion">
+                        <div class="panel panel-default">
+                            <div class = "panel-heading" >
+                                <h4 class = "panel-title" >
+                                    <a data-toggle = "collapse"  data-parent = "#acordord" href ="#{{ my_answer.answer_id }}">
+                                        我的回答
+                                    </a >
+                                    <a class="glyphicon glyphicon-trash" style="color:red;float: right"
+                                    onclick="delete_answer({{ my_answer.answer_id }})"></a>
+                                </h4>
+                            </div >
+                            <div id = "{{ my_answer.answer_id }}"  class = "panel-collapse collapse in" >
+                                <div class="panel-body">
+                                    {{ my_answer.answer }}
+                                    <div style="text-align: right">
+                                        <p class="p_font_nickname">
+                                            <span class="span_font_color">点赞数：</span>
+                                            <span id="like_num{{ answer.id }}" class="badge">{{ my_answer.like_num }}</span>
+                                        </p>
+                                        <p class="p_font_nickname">
+                                            <span class="span_font_color">时间：</span>
+                                            {{ my_answer.create_time }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        let PUB_URL ={
+            "dataDeleteAnswer": "/abroad/delete_answer/",
+        }
+    </script>
+    <script src="{% static "js/problem/my_answer.js" %}"></script>
 {% endblock %}

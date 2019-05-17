@@ -191,9 +191,21 @@ class ProblemManage(object):
             else:
                 return {'ret': False, 'msg': '操作过快，请稍后'}
 
-
-
-
+    def delete_answer(self, user_id, answer_id):
+        answerExist = self.answerObj.filter(user_id=user_id, id=answer_id)
+        if answerExist:
+            question_id = answerExist.first().question_id
+            try:
+                self.likeObj.filter(answer_id=answer_id).delete()
+                answerExist.delete()
+                has_answer = self.answerObj.filter(question_id=question_id)
+                if not has_answer:
+                    self.questionObj.filter(id=question_id).update(state=self.question_state_dic['unAnswer'])
+                return {'ret': True, 'msg': '删除成功！'}
+            except Exception, e:
+                return {'ret': False, 'msg': '出错了！' + str(e)}
+        else:
+            return {'ret': False, 'msg': '未找到该条回答！'}
 
 # 提出问题
 @csrf_exempt
@@ -271,4 +283,13 @@ def browsing_question_answer_like(request):
     answer_id = params['answer_id']
     is_like = params['is_like']
     result = ProblemManage().browsing_question_answer_like(user_id, answer_id, is_like)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+# 我的回答 删除回答
+@csrf_exempt
+def delete_answer(request):
+    user_id = request.user.id
+    answer_id = request.POST.get('answer_id')
+    result = ProblemManage().delete_answer(user_id, answer_id)
     return HttpResponse(json.dumps(result), content_type='application/json')

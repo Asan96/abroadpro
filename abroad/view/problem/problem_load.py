@@ -28,6 +28,25 @@ def load_my_question_page(request):
 @csrf_exempt
 def load_my_answer_page(request):
     operations = Operating.objects.values()
+    user_id = request.user.id
+    answers = Answer.objects.filter(user_id=user_id)
+    empty_lst = []
+    my_answer_lst = []
+    for answer in answers:
+        other_answer_lst = []
+        question = Question.objects.filter(id=answer.question_id).values('question', 'user_id').first()
+        question_nickname = User.objects.filter(id=question['user_id']).values_list('nickname',flat=True).first()
+        answer_dic = {
+            'question_nickname': question_nickname,
+            'answer_id': answer.id,
+            'question_id': answer.question_id,
+            'question': question['question'],
+            'create_time': time_format(answer.create_time),
+            'answer': answer.answer,
+            'like_num': answer.like_num,
+        }
+        my_answer_lst.append(answer_dic)
+    my_answer_count = len(my_answer_lst)
     return render(request, "problem/my_answer.html", locals())
 
 
@@ -65,11 +84,3 @@ def load_browsing_question_page(request):
     return render(request, "problem/browsing_question.html", locals())
 
 
-@login_required
-@csrf_exempt
-def load_browsing_answer_page(request):
-    operations = Operating.objects.values()
-    return render(request, "problem/browsing_answer.html", locals())
-
-# @csrf_exempt
-# def load_browsing_answer_page(request):

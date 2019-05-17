@@ -101,13 +101,13 @@ urlpatterns = [
     url(r'^delete_question/$', problem_main.delete_question, name='delete_question'),  # 删除问题
     # 我的回答
     url(r'^my_answer/$', problem_load.load_my_answer_page, name='my_answer'),
+    url(r'^delete_answer/$', problem_main.delete_answer, name='delete_answer'),
     # 注意事项
     url(r'^note_problem/$', problem_load.load_note_problem_page, name='note_problem'),
     # 浏览问题
     url(r'^browsing_question/$', problem_load.load_browsing_question_page, name='browsing_question'),
     url(r'^browsing_question_answer_like/$', problem_main.browsing_question_answer_like, name='browsing_question_answer_like'),  # 浏览问题点赞
-    # 浏览答案
-    url(r'^browsing_answer/$', problem_load.load_browsing_answer_page, name='browsing_answer'),
+
 
 
 
