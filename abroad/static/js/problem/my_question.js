@@ -1,5 +1,5 @@
 let table = '#table_my_question';
-let table_child = '';
+let table_child = [];
 table_init();
 function table_init(){
     window.operateEvents = {
@@ -132,7 +132,7 @@ function table_init(){
     InitSubTable = function (index, row, $detail) {
         var questionId = row.question_id;
         var cur_table = $detail.html('<table class="table table-striped article_table table_col_line"></table>').find('table');
-        table_child = cur_table;
+        table_child.push(cur_table);
         $(cur_table).bootstrapTable({
             url: PUB_URL.dataMyQuestionChildTableInit,
             method: 'POST',
@@ -224,6 +224,9 @@ $('#btn_raise_question').click(function () {
             }
         });
     }
+    else{
+        alert_msg('问题字数过长！')
+    }
 });
 function operateFormatter(value, row, index) {
     return [
@@ -237,13 +240,13 @@ function formatterLike(value, row, index) {
     if (user_is_like === '0'){
         return [
             '<div class="btn-group">',
-            '<button id="btn_like" type="button" class="btn btn-danger glyphicon glyphicon-heart"></button>',
+            '<button id="btn_like" type="button" class="btn btn-dark glyphicon glyphicon-heart-empty"></button>',
             '</div>'
         ].join('');
     }else if(user_is_like === '1'){
         return [
             '<div class="btn-group">',
-            '<button id="btn_like" type="button" class="btn btn-dark glyphicon glyphicon-heart-empty"></button>',
+            '<button id="btn_like" type="button" class="btn btn-danger glyphicon glyphicon-heart"></button>',
             '</div>'
         ].join('');
     }
