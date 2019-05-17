@@ -6,18 +6,19 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, HttpResponse
 from abroad.models import *
 from django.contrib.auth.decorators import login_required
+from abroad.views import page_init
 
 
 @login_required
 @csrf_exempt
 def load_news_page(request):
-    operations = Operating.objects.values()
+    operations, now_nickname = page_init(request)
     return render(request, "news/news.html", locals())
 
 @login_required
 @csrf_exempt
 def load_browsing_page(request):
-    operations = Operating.objects.values()
+    operations, now_nickname = page_init(request)
     params = request.GET.dict()
     nickname = params['nickname']
     title = params['title']
@@ -29,24 +30,24 @@ def load_browsing_page(request):
 @login_required
 @csrf_exempt
 def load_edit_page(request):
-    operations = Operating.objects.values()
+    operations, now_nickname = page_init(request)
     return render(request, "news/edit_news.html", locals())
 
 # 我的推送
 @login_required
 @csrf_exempt
 def load_push_page(request):
-    operations = Operating.objects.values()
+    operations, now_nickname = page_init(request)
     return render(request, "news/push_news.html", locals())
 
 # 注意事项
 @csrf_exempt
 def load_note_page(request):
-    operations = Operating.objects.values()
+    operations, now_nickname = page_init(request)
     return render(request, "news/note_news.html", locals())
 
 # 我的草稿
 @csrf_exempt
 def load_draft_page(request):
-    operations = Operating.objects.values()
+    operations, now_nickname = page_init(request)
     return render(request, "news/draft_news.html", locals())

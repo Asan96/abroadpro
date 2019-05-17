@@ -3,3 +3,47 @@
 {% block title_name %}
     注意事项
 {% endblock %}
+{% block style %}
+    <style>
+        .span_font{
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading panel_title_format">
+            <h3 class="panel-title">注意事项</h3>
+        </div>
+        <div class="panel-body panel_body_format">
+            <div class="panel panel-default edit_table_div">
+                <div class="panel-body">
+                    <div class="alert alert-danger">
+                        <span class="span_font">1. </span>
+                        你问我答： 点击查询条件，根据需要输入筛选条件进行搜索。点击刷新，重新加载所有数据。
+                    </div>
+                    <div class="alert alert-danger">
+                        <span class="span_font">2. </span>
+                        你问我答： 点击回答，在弹出模态框中输入回答内容，不得为空。点击查看能查看所有该问题的回答，并可点赞。
+                    </div>
+                    <div class="alert alert-danger">
+                        <span class="span_font">3. </span>
+                        你问我答： 点击加号可查看全部回答内容的梗概，可进行点赞操作，可根据回答时间、点赞数排序。
+                    </div>
+                    <div class="alert alert-danger">
+                        <span class="span_font">4. </span>
+                        你问我答： 查看自己提出的问题，必须在我的问题页面查看。
+                    </div>
+                    <div class="alert alert-danger">
+                        <span class="span_font">5. </span>
+                        我的问题： 上方输入框输入问题内容，下方可查看我的问题，以及所有回答，也可进行点赞。点击问题标题可查看详细回答内容。
+                    </div>
+                    <div class="alert alert-danger">
+                        <span class="span_font">6. </span>
+                        我的回答： 可查看自己回答过的问题以及点赞数，点击垃圾桶标识删除回答，若无回答则不显示。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

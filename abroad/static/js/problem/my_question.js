@@ -83,7 +83,7 @@ function table_init(){
                 title: '问题内容',
                 align: 'center',
                 valign: 'middle',
-                formatter:show_formatter,
+                formatter:show_formatter_question,
                 cellStyle:{
                     css:{
                         "overflow": "hidden",
@@ -194,6 +194,14 @@ function show_formatter(value,row,index) {
     span.setAttribute('title',value);
     span.innerHTML = value;
     return span.outerHTML;
+}
+
+function show_formatter_question(value,row,index) {
+    let span=document.createElement('span');
+    span.setAttribute('title',value);
+    span.innerHTML = value;
+    let href = "../browsing_question?question_id="+row.question_id;
+    return span.outerHTML, '<a href='+href+'>'+row.question+'</a>';
 }
 
 $('#btn_raise_question').click(function () {
