@@ -37,6 +37,10 @@ urlpatterns = [
     url(r'^modify_password/$', login_load.modify_password, name='modify_password'),
 
 
+    # 登出
+    url(r'^log_out/$', views.log_out, name='log_out'),
+
+
 
     # 投稿专栏
     url(r'^news/$', news_load.load_news_page, name='load_news_page'),
