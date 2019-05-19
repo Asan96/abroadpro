@@ -19,7 +19,6 @@ from django.contrib import admin
 from view.login import login_load
 from view.news import news_load, news_main
 from view.communicate import communicate_load, communicate_main
-from view.transaction import transaction_load
 from view.problem import problem_load, problem_main
 import views
 
@@ -40,7 +39,8 @@ urlpatterns = [
     # 登出
     url(r'^log_out/$', views.log_out, name='log_out'),
 
-
+    # 注意事项
+    url(r'^note/$', views.load_note_page, name='load_note_page'),
 
     # 投稿专栏
     url(r'^news/$', news_load.load_news_page, name='load_news_page'),
@@ -60,8 +60,6 @@ urlpatterns = [
     url(r'^push/$', news_load.load_push_page, name='load_push_page'),
     url(r'^push_table_init/$', news_main.my_push, name='push_table_init'),
     url(r'^delete_my_push/$', news_main.delete_my_push, name='delete_my_push'),
-    # 注意事项
-    url(r'^note/$', news_load.load_note_page, name='load_note_page'),
     # 浏览文章
     url(r'^browsing_news/$', news_load.load_browsing_page, name='browsing_news'),
 
@@ -82,8 +80,6 @@ urlpatterns = [
     url(r'^my_friend_table_init/$', communicate_main.my_friend_table_init, name='my_friend_table_init'),  # 我的好友表
     url(r'^send_message/$', communicate_main.send_message, name='send_message'),  # 发送留言
     url(r'^delete_friend/$', communicate_main.delete_friend, name='delete_friend'),  # 删除好友
-    # 注意事项
-    url(r'^note_communicate/$', communicate_load.load_note_communicate_page, name='note_communicate'),
     # 浏览留言
     url(r'^browsing_message/$', communicate_load.load_browsing_page, name='browsing_message'),
     url(r'^check_friend/$', communicate_main.check_friend, name='check_friend'),   # 审核好友通知
@@ -106,17 +102,9 @@ urlpatterns = [
     # 我的回答
     url(r'^my_answer/$', problem_load.load_my_answer_page, name='my_answer'),
     url(r'^delete_answer/$', problem_main.delete_answer, name='delete_answer'),
-    # 注意事项
-    url(r'^note_problem/$', problem_load.load_note_problem_page, name='note_problem'),
     # 浏览问题
     url(r'^browsing_question/$', problem_load.load_browsing_question_page, name='browsing_question'),
     url(r'^browsing_question_answer_like/$', problem_main.browsing_question_answer_like, name='browsing_question_answer_like'),  # 浏览问题点赞
-
-
-
-
-    # 交易专栏
-    url(r'^transaction/$', transaction_load.load_transaction_page, name='load_transaction_page'),
 
 
 

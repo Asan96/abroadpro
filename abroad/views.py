@@ -9,27 +9,37 @@ from models import *
 import json
 
 
+@login_required
 @csrf_exempt
-def page_init(request):
-    operations = Operating.objects.values()
-    now_nickname = request.user.nickname
-    return operations, now_nickname
+def load_base_page(request):
+    operations, user_id, msg_count, now_nickname = public_params(request)
+    return render(request, "base.html", locals())
 
 
 @login_required
 @csrf_exempt
-def load_base_page(request):
-    operations, now_nickname = page_init(request)
-    return render(request, "base.html", locals())
+def load_note_page(request):
+    operations, user_id, msg_count, now_nickname = public_params(request)
+    return render(request, "note/note.html", locals())
+
 
 @login_required
 @csrf_exempt
 def load_home_page(request):
-    operations, now_nickname = page_init(request)
+    operations, user_id, msg_count, now_nickname = public_params(request)
     return render(request, "home/home.html", locals())
+
 
 @csrf_exempt
 def log_out(request):
     logout(request)
     result = {'ret': True, 'msg': '登出成功！'}
     return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+def public_params(request):
+    operations = Operating.objects.filter(is_root='1').values()
+    now_nickname = request.user.nickname
+    user_id = request.user.id
+    msg_count = Message.objects.filter(to_user_id=user_id, state='0').count()
+    return operations, user_id, msg_count, now_nickname

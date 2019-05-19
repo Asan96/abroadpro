@@ -9,9 +9,7 @@ function table_init(){
             return {
                 limit: params.limit, // 每页要显示的数据条数
                 offset: params.offset, // 每页显示数据的开始行号
-                title_search: $('#title_search').val(),
-                nickname_search : $('#nickname_search').val(),
-                keyword_search : $('#keyword_search').val(),
+                search_word: $('#search_word').val(),
             }
         },
         toolbar: "#toolbar",
@@ -82,9 +80,4 @@ function show_formatter(value,row,index) {
 }
 $('#btn_search').click(function () {
     $(table).bootstrapTable('refresh')
-});
-$('#btn_clear').click(function () {
-    $('#title_search').val('');
-    $('#nickname_search').val('');
-    $('#keyword_search').val('');
 });

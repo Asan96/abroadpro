@@ -1,0 +1,81 @@
+{% extends 'news/news.html' %}
+{% load static %}
+{% block title_name %}
+    注意事项
+{% endblock %}
+{% block style %}
+    <style>
+        .span_font{
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default ">
+            <div class="panel-heading panel_title_format">
+                <h3 class="panel-title">注意事项</h3>
+            </div>
+            <div class="panel-body panel_body_format">
+                <div class="panel panel-default edit_table_div">
+                    <div class="panel-body">
+                        <div class="alert alert-danger">
+                            <span class="span_font">1. </span>
+                            编辑文章： 请按提示填写，标题不可重复，关键词仅填写文章所包含的内容梗概，文章字数不要超过十万字。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">2. </span>
+                            我的推送： 查看自己已发布的文章，可在操作列下方进行单篇文章的删除。文章内容只显示部分，鼠标指向该单元格可显示全部内容
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">3. </span>
+                            我的草稿： 查看自己保存为草稿的文章，可继续进行修改保存并且发布，删除草稿则进行删除操作。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">4. </span>
+                            文章浏览： 查看当前所有用户推送的文章，可通过相关的筛选条件进行筛选。点击标题可查看文章相关内容。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">5. </span>
+                            留言板： 留言板连接旁边的徽章数字显示的是未读的留言或通知总数。留言板内会显示所有的留言或者通知，
+                            点击查看可查看留言或者通知的内容。查看好友申请通知会显示同意或者拒绝，同意后双方则成为好友，可以互相留言。
+                            留言板内可根据条件进行筛选，点击搜索筛选出符合条件的留言或通知。清楚条件可清除所有筛选条件。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">6. </span>
+                            我的好友：查看自己的好友，可点击留言进行沟通，筛选框可搜索符合条件的好友。
+                            删除好友可通过复选框点击进行删除，一旦删除必须重新通过添加好友恢复。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">7. </span>
+                            添加好友： 输入要查找的好友昵称、账号的关键词进行搜索，搜索后可点击关注进行添加。
+                            只有添加成功的好友才可进行留言，已关注的好友无法进行再次关注。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">8. </span>
+                            你问我答： 点击查询条件，根据需要输入筛选条件进行搜索。点击刷新，重新加载所有数据。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">9. </span>
+                            你问我答： 点击回答，在弹出模态框中输入回答内容，不得为空。点击查看能查看所有该问题的回答，并可点赞。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">10. </span>
+                            你问我答： 点击加号可查看全部回答内容的梗概，可进行点赞操作，可根据回答时间、点赞数排序。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">11. </span>
+                            你问我答： 查看自己提出的问题，必须在我的问题页面查看。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">12. </span>
+                            我的问题： 上方输入框输入问题内容，下方可查看我的问题，以及所有回答，也可进行点赞。点击问题标题可查看详细回答内容。
+                        </div>
+                        <div class="alert alert-danger">
+                            <span class="span_font">13. </span>
+                            我的回答： 可查看自己回答过的问题以及点赞数，点击垃圾桶标识删除回答，若无回答则不显示。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

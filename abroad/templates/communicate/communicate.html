@@ -3,33 +3,6 @@
 {% block title_name %}
         社交专栏
 {% endblock %}
-{% block menu %}
-    <nav class="friend_menu navbar-default">
-        <ul class="nav nav-pills nav-stacked">
-            <li class="sidebar-brand text_li text_brand">
-                <a href="../communicate" class="text_color">
-                    留言板
-                    <span class="badge">{{ msg_count }}</span>
-                </a>
-            </li>
-            <li>
-                <a class="text_li" href="../my_friend">
-                    <span class="glyphicon glyphicon-user"> 我的好友</span>
-                </a>
-            </li>
-            <li>
-                <a class="text_li" href="../add_friend">
-                    <span class="glyphicon glyphicon-search"> 添加好友</span>
-                </a>
-            </li>
-            <li>
-                <a class="text_li" href="../note_communicate">
-                    <span class="glyphicon glyphicon-exclamation-sign"> 注意事项</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-{% endblock %}
 {% block content %}
     <div class="panel panel-info">
         <div class="panel-heading panel_title_format">

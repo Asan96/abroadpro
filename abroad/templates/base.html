@@ -31,7 +31,7 @@
                 <ul class="nav navbar-nav">
                     {% for info in operations %}
                         {% if info.url %}
-                            <li class="" style="padding-right: 60px">
+                            <li class="" style="padding-left: 60px">
                                 <a class="" href="{{ info.url }}">
                                     {{ info.operation_cn }}
                                 </a>
@@ -51,12 +51,74 @@
     </nav>
 {% endblock %}
 {% block menu %}
+    <nav class="menu_div navbar-default">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="sidebar-brand text_li text_brand">
+                <a href="../news" class="text_color">
+                    文章浏览
+                </a>
+            </li>
+            <li class="text_li">
+                <a href="../edit">
+                     <span class=" glyphicon glyphicon-pencil"> 编辑文章</span>
+                </a>
+            </li>
+            <li class="text_li">
+                <a href="../push">
+                    <span class=" glyphicon glyphicon-upload"> 我的发布</span>
+                </a>
+            </li>
+            <li class="text_li">
+                <a href="../draft">
+                    <span class=" glyphicon glyphicon-list-alt"> 我的草稿</span>
+                </a>
+            </li>
+            <li class="sidebar-brand text_li text_brand">
+                <a href="../communicate" class="text_color">
+                    信箱
+                    <span class="badge">{{ msg_count }}</span>
+                </a>
+            </li>
+            <li>
+                <a class="text_li" href="../my_friend">
+                    <span class="glyphicon glyphicon-user"> 我的好友</span>
+                </a>
+            </li>
+            <li>
+                <a class="text_li" href="../add_friend">
+                    <span class="glyphicon glyphicon-search"> 添加好友</span>
+                </a>
+            </li>
+            <li class="sidebar-brand text_li text_brand">
+                <a href="../problem" class="text_color">
+                    你问我答
+                </a>
+            </li>
+            <li class="text_li">
+                <a href="../my_question">
+                     <span class=" glyphicon glyphicon-tags"> 我的问题</span>
+                </a>
+            </li>
+            <li class="text_li">
+                <a href="../my_answer">
+                    <span class=" glyphicon glyphicon-check"> 我的回答</span>
+                </a>
+            </li>
+            <li class="sidebar-brand text_li text_brand">
+                <a href="../note" class="text_color">
+                    注意事项
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
-<div style="padding-left: 200px">
+<div style="padding-left: 200px" class="out_box">
     {% block content %}
     {% endblock %}
 </div>
 {% block home %}
+{% endblock %}
+{% block total_content %}
 {% endblock %}
 </body>
 {% block js %}

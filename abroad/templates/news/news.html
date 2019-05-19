@@ -3,37 +3,6 @@
 {% block title_name %}
     投稿专栏
 {% endblock %}
-{% block menu %}
-    <nav class="menu_div navbar-default">
-        <ul class="nav nav-pills nav-stacked">
-            <li class="sidebar-brand text_li text_brand">
-                <a href="../news" class="text_color">
-                    文章浏览
-                </a>
-            </li>
-            <li class="text_li">
-                <a href="../edit">
-                     <span class="text_color glyphicon glyphicon-pencil"> 编辑文章</span>
-                </a>
-            </li>
-            <li class="text_li">
-                <a href="../push">
-                    <span class="text_color glyphicon glyphicon-upload"> 我的推送</span>
-                </a>
-            </li>
-            <li class="text_li">
-                <a href="../draft">
-                    <span class="text_color glyphicon glyphicon-list-alt"> 我的草稿</span>
-                </a>
-            </li>
-            <li class="text_li">
-                <a href="../note">
-                    <span class="text_color glyphicon glyphicon-info-sign" style="text-align: center"> 注意事项</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-{% endblock %}
 {% block content %}
     <div class="panel panel-info">
         <div class="panel-heading panel_title_format">
@@ -44,34 +13,20 @@
                 <div class="panel-heading">
                     <h4 class = "panel-title" >
                         <a data-toggle = "collapse"  data-parent = "#acordord" href ="#collapseOne" style="color: orangered">
-                            <span class="glyphicon glyphicon-th-list"> 查询条件</span>
+                            <span class="glyphicon glyphicon-th-list"></span>
                         </a >
                     </h4 >
                 </div>
-                <div id = "collapseOne"  class = "panel-collapse collapse" >
-                    <div class="panel-body">
-                    <div class="input-group">
-                        <div class="input-group input_article" style="padding-left: 0px">
-                            <span class="input-group-addon">标 题 </span>
-                            <input type="text" class="form-control" style="width: 200px;" id="title_search">
-                        </div>
-
-                        <div class="input-group input_article">
-                            <span class="input-group-addon">发 布 人 </span>
-                            <input type="text" class="form-control" style="width: 200px" id="nickname_search">
-                        </div>
-                        <div class="input-group input_article">
-                            <span class="input-group-addon">关 键 词 </span>
-                            <input type="text" class="form-control" style="width: 200px" id="keyword_search">
-                        </div>
-                        <div class="input-group input_article">
-                            <button class="btn btn-warning" style="width: 80px" id="btn_search">搜 索 </button>
-                        </div>
-                        <div class="input-group input_article">
-                            <button class="btn btn-danger" id="btn_clear">清除条件</button>
+                <div id = "collapseOne"  class = "panel-collapse collapse in">
+                    <div class="panel-body" style="padding-left: 25%;">
+                        <div class="input-group input_article" style="width: 60%;padding-top: 0px">
+                            <input type="text" class="form-control" id="search_word"
+                                   placeholder="请输入文章标题、关键词、发布人部分信息">
+                            <span class="input-group-btn">
+                                <button class="btn btn-warning" style="width: 80px" id="btn_search">搜 索 </button>
+                            </span>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
             <div class="input-group">

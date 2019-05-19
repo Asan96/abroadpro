@@ -8,6 +8,7 @@ from django.shortcuts import render, HttpResponse
 from abroad.models import *
 from django.utils import timezone
 from abroad.view import time_format
+from django.db.models import Q
 
 import json
 
@@ -63,19 +64,15 @@ class EditNews:
         except Exception, e:
             return {'ret': False, 'msg': '删除失败！'+str(e)}
 
-    def news_table_init(self, title, nickname, keyword):
+    def news_table_init(self, search_word):
         news_lst = []
         search_dict = {
             'state': self.state_dict['push']
         }
-        if title:
-            search_dict['title'] = title
-        if nickname:
-            user_id = self.userObj.filter(nickname=nickname).values_list('id', flat=True).first()
-            search_dict['user_id'] = user_id
-        if keyword:
-            search_dict['keyword'] = keyword
         news = self.newsObj.filter(**search_dict)
+        if search_word:
+            user_id = self.userObj.filter(nickname=search_word).values_list('id', flat=True).first()
+            news = news.filter(Q(keyword__icontains=search_word) | Q(title__icontains=search_word) | Q(user_id=user_id))
         for new in news:
             nickname = self.userObj.filter(id=new.user_id).values_list('nickname', flat=True).first()
             new_info_dic = {
@@ -189,10 +186,8 @@ def news_table_init(request):
     params = request.POST.dict()
     limit = int(params['limit'])
     offset = int(params['offset'])
-    title = params.get('title_search', '')
-    nickname = params.get('nickname_search', '')
-    keyword = params.get('keyword_search', '')
-    total, rows = EditNews().news_table_init(title, nickname, keyword)
+    search_word = params.get('search_word', '')
+    total, rows = EditNews().news_table_init(search_word)
     row_lst = rows[offset:offset+limit]
     return HttpResponse(json.dumps({'total': total, 'rows': row_lst}))
 

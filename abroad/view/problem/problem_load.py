@@ -7,28 +7,28 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from abroad.models import *
 from abroad.view import *
-from abroad.views import page_init
+from abroad.views import *
 
 
 
 @login_required
 @csrf_exempt
 def load_problem_page(request):
-    operations, now_nickname = page_init(request)
+    operations, user_id, msg_count, now_nickname = public_params(request)
     return render(request, "problem/problem.html", locals())
 
 
 @login_required
 @csrf_exempt
 def load_my_question_page(request):
-    operations, now_nickname = page_init(request)
+    operations, user_id, msg_count, now_nickname = public_params(request)
     return render(request, "problem/my_question.html", locals())
 
 
 @login_required
 @csrf_exempt
 def load_my_answer_page(request):
-    operations, now_nickname = page_init(request)
+    operations, user_id, msg_count, now_nickname = public_params(request)
     user_id = request.user.id
     answers = Answer.objects.filter(user_id=user_id)
     empty_lst = []
@@ -53,15 +53,8 @@ def load_my_answer_page(request):
 
 @login_required
 @csrf_exempt
-def load_note_problem_page(request):
-    operations, now_nickname = page_init(request)
-    return render(request, "problem/note_problem.html", locals())
-
-
-@login_required
-@csrf_exempt
 def load_browsing_question_page(request):
-    operations, now_nickname = page_init(request)
+    operations, user_id, msg_count, now_nickname = public_params(request)
     question_id = request.GET.get('question_id')
     question = Question.objects.filter(id=question_id).first()
     question_create_time = time_format(question.create_time)

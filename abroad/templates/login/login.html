@@ -14,6 +14,8 @@
             margin:-150px 0 0 -200px;
             width:400px;
             height:300px;
+            opacity:0.9;
+            filter:alpha(opacity=90);
             {#border:1px solid #008800;#}
         }
         .div_login_info{
@@ -34,31 +36,34 @@
     </style>
 </head>
 <body>
-<div id="div_login">
-    <div class="col-lg-3">
-        <div class="panel panel-primary" style="width: 300px">
-            <div class="panel-heading" >
-                <h3 class="panel-title" style="text-align:center;">海外留学交流平台</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group has-feedback" >
-                    <input type="text" class=" form-control" id="user_id"
-                           placeholder="账号">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+<div id="formbackground" style="position:absolute; width:100%; height:100%; z-index:-1">
+    <img src="{% static 'picture/background/b1.jpg' %}" height="100%" width="100%"/>
+    <div id="div_login">
+        <div class="col-lg-3">
+            <div class="panel panel-primary" style="width: 300px">
+                <div class="panel-heading" >
+                    <h3 class="panel-title" style="text-align:center;">海外留学交流平台</h3>
                 </div>
-                <div class="form-group has-feedback" >
-                    <input type="password" class=" form-control"  id="password"
-                           placeholder="密码">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div style="padding-bottom: 1px;padding-top: -1px;">
-                    <a id="href_register">注册账号</a>
-                    <div style="float: right">
-                        <a id="href_modify_password">忘记密码</a>
+                <div class="panel-body">
+                    <div class="form-group has-feedback" >
+                        <input type="text" class=" form-control" id="user_id"
+                               placeholder="账号">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
-                </div>
-                <div class="input-group">
-                    <button type="button" class="btn btn-primary" id="btn_login" style="width: 270px">登录</button>
+                    <div class="form-group has-feedback" >
+                        <input type="password" class=" form-control"  id="password"
+                               placeholder="密码">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div style="padding-bottom: 1px;padding-top: -1px;">
+                        <a id="href_register">注册账号</a>
+                        <div style="float: right">
+                            <a id="href_modify_password">忘记密码</a>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <button type="button" class="btn btn-primary" id="btn_login" style="width: 270px">登录</button>
+                    </div>
                 </div>
             </div>
         </div>

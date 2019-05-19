@@ -29,6 +29,8 @@ class Operating(models.Model):
     operation_cn = models.CharField(max_length=50)
     operation_en = models.CharField(max_length=50)
     url = models.CharField(max_length=50)
+    parent_id = models.IntegerField()
+    is_root = models.CharField(max_length=1)
 
     class Meta:
         db_table = 'operating'

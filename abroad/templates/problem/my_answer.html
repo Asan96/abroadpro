@@ -54,34 +54,18 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <div class = "panel-group" id = "accordion">
-                        <div class="panel panel-default">
-                            <div class = "panel-heading" >
-                                <h4 class = "panel-title" >
-                                    <a data-toggle = "collapse"  data-parent = "#acordord" href ="#{{ my_answer.answer_id }}">
-                                        我的回答
-                                    </a >
-                                    <a class="glyphicon glyphicon-trash" style="color:red;float: right"
+                    <span>我的回答:</span>{{ my_answer.answer }}
+                    <a class="glyphicon glyphicon-trash" style="color:red;float: right"
                                     onclick="delete_answer({{ my_answer.answer_id }})"></a>
-                                </h4>
-                            </div >
-                            <div id = "{{ my_answer.answer_id }}"  class = "panel-collapse collapse in" >
-                                <div class="panel-body">
-                                    {{ my_answer.answer }}
-                                    <div style="text-align: right">
-                                        <p class="p_font_nickname">
-                                            <span class="span_font_color">点赞数：</span>
-                                            <span id="like_num{{ answer.id }}" class="badge">{{ my_answer.like_num }}</span>
-                                        </p>
-                                        <p class="p_font_nickname">
-                                            <span class="span_font_color">时间：</span>
-                                            {{ my_answer.create_time }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+                    <div style="text-align: right">
+                        <p class="p_font_nickname">
+                            <span class="span_font_color">点赞数：</span>
+                            <span id="like_num{{ answer.id }}" class="badge">{{ my_answer.like_num }}</span>
+                        </p>
+                        <p class="p_font_nickname">
+                            <span class="span_font_color">时间：</span>
+                            {{ my_answer.create_time }}
+                        </p>
                     </div>
                 </div>
             </div>
