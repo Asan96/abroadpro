@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^edit/$', news_load.load_edit_page, name='load_edit_page'),
     url(r'^edit_news_save/$', news_main.edit_news_save, name='edit_news_save'),  # 保存草稿
     url(r'^edit_news_submit/$', news_main.edit_news_submit, name='edit_news_submit'),  # 发布文章
+    url(r'^select_school_init/$', news_load.select_school_init, name='select_school_init'),  # 学校加载
     # 我的草稿
     url(r'^draft/$', news_load.load_draft_page, name='load_draft_page'),
     url(r'^draft_table_init/$', news_main.my_draft, name='draft_table_init'),
@@ -62,6 +63,10 @@ urlpatterns = [
     url(r'^delete_my_push/$', news_main.delete_my_push, name='delete_my_push'),
     # 浏览文章
     url(r'^browsing_news/$', news_load.load_browsing_page, name='browsing_news'),
+    url(r'^comment/$', news_main.comment, name='comment'),  # 评论
+    url(r'^reply_comment/$', news_main.reply_comment, name='reply_comment'),  # 回复评论
+    url(r'^delete_comment/$', news_main.delete_comment, name='delete_comment'),  # 删除评论
+    url(r'^delete_reply/$', news_main.delete_reply, name='delete_reply'),  # 删除回复
 
 
 

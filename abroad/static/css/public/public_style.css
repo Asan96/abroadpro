@@ -53,8 +53,8 @@
     width: 80%;
 }
 .article_panel_body_format{
-    height: 660px;
-    padding-left: 5%;
+    height: 700px;
+    /*padding-left: 5%;*/
     padding-top: 30px;
 }
 .article_table_div{
@@ -67,7 +67,7 @@
 }
 .textarea_format{
     width: 100%;
-    height: 350px;
+    height: 300px;
     overflow-y:scroll;
 }
 .btn_format{
@@ -140,4 +140,12 @@
 .out_box{
     height: 660px;
     overflow-y: auto;
+}
+
+/** 回复框
+*/
+.textarea_reply_format{
+    width: 100%;
+    height: 200px;
+    overflow-y:scroll;
 }

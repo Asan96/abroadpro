@@ -1,3 +1,34 @@
+$(function () {
+    $('#select_country,#select_school').selectpicker({
+        size: 5
+    });
+    $('#select_country').change(function () {
+        let country = $('#select_country').val();
+        school_init(country)
+    })
+});
+function school_init(country,selected_school='no'){
+    $('#select_school').empty();
+    $('#select_school').append("<option value=''>请选择学校</option>");
+    $.ajax({
+        type: "post",
+        data: {'country':country},
+        dataType:'json',
+        url: PUB_URL.dataSelectSchoolInit,
+        success: function (data) {
+            let school_lst = data.msg.split(',');
+            for (let i=0;i<school_lst.length;i++){
+                let school = school_lst[i];
+                if (school!=='' && school === selected_school){
+                    $('#select_school').append("<option value='"+school+"' selected>"+school+"</option>");
+                }else if (school!=='') {
+                    $('#select_school').append("<option value='"+school+"'>"+school+"</option>");
+                }
+                $('#select_school').selectpicker('refresh');
+            }
+        }
+    });
+}
 table_init('#table_my_draft');
 function table_init(table){
     window.operateEvents = {
@@ -44,9 +75,13 @@ function table_init(table){
                 data : {'news_id':news_id},
                 success : function(data) {
                     if (data.id){
-                      $('#draft_title').val(data.title);
-                      $('#draft_keyword').val(data.keyword);
-                      $('#draft_article').val(data.article);
+                        let keyword_lst = data.keyword.split(',');
+                        let country = keyword_lst[1];
+                        $('#draft_title').val(data.title);
+                        $('#select_clas').selectpicker('val',keyword_lst[0]);
+                        $('#select_country').selectpicker('val',country);
+                        school_init(country,keyword_lst[2]);
+                        $('#draft_article').val(data.article);
                     }
                 },
                 error : function (XMLHttpRequest, textStatus, errorThrown) {
@@ -58,7 +93,9 @@ function table_init(table){
                 let params = {
                     'news_id':news_id,
                     'title': $('#draft_title').val(),
-                    'keyword': $('#draft_keyword').val(),
+                    'country': $('#select_country').val(),
+                    'school': $('#select_school').val(),
+                    'clas': $('#select_clas').val(),
                     'article': $('#draft_article').val(),
                 };
                 $.ajax({
@@ -120,15 +157,16 @@ function table_init(table){
         uniqueId: "title",
         contentType: "application/x-www-form-urlencoded",
         sidePagination: "server",
-        pageSize: 6,
+        pageSize: 10,
         pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
-        height:480,
+        height:600,
         pagination: true, // 是否分页
         sortable: true, // 是否启用排序
         columns: [
             {
                 field: 'title',
                 title: '文章标题',
+                width: '40%',
                 align: 'center',
                 valign: 'middle',
             },
@@ -138,29 +176,31 @@ function table_init(table){
                 align: 'center',
                 valign: 'middle',
             },
-            {
-                field: 'article',
-                title: '文章内容',
-                align: 'center',
-                valign: 'middle',
-                cellStyle:{
-                    css:{
-                        "overflow": "hidden",
-                        "text-overflow": "ellipsis",
-                        "white-space": "nowrap"
-                    }
-                },
-                formatter:show_formatter
-            },
+            // {
+            //     field: 'article',
+            //     title: '文章内容',
+            //     align: 'center',
+            //     valign: 'middle',
+            //     cellStyle:{
+            //         css:{
+            //             "overflow": "hidden",
+            //             "text-overflow": "ellipsis",
+            //             "white-space": "nowrap"
+            //         }
+            //     },
+            //     formatter:show_formatter
+            // },
             {
                 field: 'create_time',
                 title: '保存时间',
+                width: 150,
                 align: 'center',
                 valign: 'middle',
             },
             {
                 field: 'update_time',
                 title: '更新时间',
+                width: 150,
                 align: 'center',
                 valign: 'middle',
             },

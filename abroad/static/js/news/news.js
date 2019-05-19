@@ -28,6 +28,7 @@ function table_init(){
                 title: '文章标题',
                 align: 'center',
                 valign: 'middle',
+                width: '50%',
                 formatter:href_formatter
             },
             {
@@ -36,29 +37,31 @@ function table_init(){
                 align: 'center',
                 valign: 'middle',
             },
-            {
-                field: 'article',
-                title: '文章内容',
-                align: 'center',
-                valign: 'middle',
-                formatter:show_formatter,
-                cellStyle:{
-                    css:{
-                        "overflow": "hidden",
-                        "text-overflow": "ellipsis",
-                        "white-space": "nowrap"
-                    }
-                },
-            },
+            // {
+            //     field: 'article',
+            //     title: '文章内容',
+            //     align: 'center',
+            //     valign: 'middle',
+            //     formatter:show_formatter,
+            //     cellStyle:{
+            //         css:{
+            //             "overflow": "hidden",
+            //             "text-overflow": "ellipsis",
+            //             "white-space": "nowrap"
+            //         }
+            //     },
+            // },
             {
                 field: 'nickname',
                 title: '发布人',
+                width:120,
                 align: 'center',
                 valign: 'middle',
             },
             {
                 field: 'push_time',
                 title: '推送时间',
+                width:150,
                 align: 'center',
                 valign: 'middle',
             },
@@ -69,7 +72,6 @@ function href_formatter(value,row,index) {
     let title = value;
     let nickname = row.nickname;
     let href = '../browsing_news?title='+title+'&nickname='+nickname
-    console.log(href)
     return '<a href='+href+'>'+title+'</a>'
 };
 function show_formatter(value,row,index) {
@@ -81,3 +83,7 @@ function show_formatter(value,row,index) {
 $('#btn_search').click(function () {
     $(table).bootstrapTable('refresh')
 });
+function table_refresh() {
+    $('#search_word').val('');
+    $(table).bootstrapTable('refresh')
+}

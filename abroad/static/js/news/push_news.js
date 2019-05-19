@@ -52,17 +52,19 @@ function table_init(table){
         uniqueId: "title",
         contentType: "application/x-www-form-urlencoded",
         sidePagination: "server",
-        pageSize: 6,
+        pageSize: 10,
         pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
         pagination: true, // 是否分页
-        height:480,
+        height:600,
         sortable: true, // 是否启用排序
         columns: [
             {
                 field: 'title',
                 title: '文章标题',
+                width:'60%',
                 align: 'center',
                 valign: 'middle',
+                formatter:href_formatter
             },
             {
                 field: 'keyword',
@@ -70,23 +72,24 @@ function table_init(table){
                 align: 'center',
                 valign: 'middle',
             },
-            {
-                field: 'article',
-                title: '文章内容',
-                align: 'center',
-                valign: 'middle',
-                cellStyle:{
-                    css:{
-                        "overflow": "hidden",
-                        "text-overflow": "ellipsis",
-                        "white-space": "nowrap"
-                    }
-                },
-                formatter:show_formatter
-            },
+            // {
+            //     field: 'article',
+            //     title: '文章内容',
+            //     align: 'center',
+            //     valign: 'middle',
+            //     cellStyle:{
+            //         css:{
+            //             "overflow": "hidden",
+            //             "text-overflow": "ellipsis",
+            //             "white-space": "nowrap"
+            //         }
+            //     },
+            //     formatter:show_formatter
+            // },
             {
                 field: 'push_time',
                 title: '推送时间',
+                width: 150,
                 align: 'center',
                 valign: 'middle',
             },
@@ -103,6 +106,13 @@ function table_init(table){
         ],
     });
 }
+function href_formatter(value,row,index) {
+    let title = value;
+    let nickname = row.nickname;
+    let href = '../browsing_news?title='+title+'&nickname='+nickname
+    console.log(href)
+    return '<a href='+href+'>'+title+'</a>'
+};
 function show_formatter(value,row,index) {
     let span=document.createElement('span');
     span.setAttribute('title',value);

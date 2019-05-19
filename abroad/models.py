@@ -107,3 +107,45 @@ class LikeAnswer(models.Model):
 
     class Meta:
         db_table = 'like_answer'
+
+
+class Location(models.Model):
+    continent = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+    school = models.CharField(max_length=50)
+    is_root = models.CharField(max_length=1)
+    parent_id = models.IntegerField()
+    level = models.CharField(max_length=1)
+
+    class Meta:
+        db_table = 'location'
+
+
+class NewsKeyword(models.Model):
+    keyword = models.CharField(max_length=50)
+    type = models.CharField(max_length=1)
+
+    class Meta:
+        db_table = 'news_keyword'
+
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    news_id = models.IntegerField()
+    user_id = models.IntegerField()
+    comment = models.CharField(max_length=200)
+    create_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'comment'
+
+
+class ReplyComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField()
+    comment_id = models.IntegerField()
+    reply = models.CharField(max_length=200)
+    create_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'reply_comment'

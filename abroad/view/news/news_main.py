@@ -21,11 +21,16 @@ class EditNews:
             'push': '1',
             'save': '0',
         }
+        self.commentObj = Comment.objects
         self.now = timezone.now()
+        self.replyObj = ReplyComment.objects
 
     def news_save(self, user_id, params,  state_key):
         title = params['title']
-        keyword = params['keyword']
+        country = params['country']
+        school = params['school']
+        clas = params['clas']
+        keyword = clas+','+country+','+school
         article = params['article']
         existObj = self.newsObj.filter(title=title)
         state = self.state_dict[state_key]
@@ -34,7 +39,7 @@ class EditNews:
         elif state == '0':
             self.newsObj.create(user_id=user_id, title=title, keyword=keyword, article=article, state=state,
                                 create_time=self.now, update_time=self.now)
-            return {'ret': True, 'msg': '文章保存成功'}
+            return {'ret': True, 'msg': '草稿保存成功'}
         elif state == '1':
             self.newsObj.create(user_id=user_id, title=title, keyword=keyword, article=article, state=state,
                                 create_time=self.now, update_time=self.now, push_time=self.now)
@@ -44,10 +49,12 @@ class EditNews:
         info_lst = []
         state = self.state_dict[state_key]
         news = self.newsObj.filter(user_id=user_id, state=state)
+        nickname = self.userObj.filter(id=user_id).values_list('nickname', flat=True).first()
         for new in news:
             new_info_dic = {
                 'id': new.id,
                 'title': new.title,
+                'nickname': nickname,
                 'keyword': new.keyword,
                 'article': new.article,
                 'create_time': time_format(new.create_time),
@@ -59,6 +66,9 @@ class EditNews:
 
     def delete_article(self, news_id):
         try:
+            comment_id_lst = self.commentObj.filter(news_id=news_id).values_list('id',flat=True)
+            self.replyObj.filter(comment_id__in=comment_id_lst).delete()
+            self.commentObj.filter(news_id=news_id).delete()
             self.newsObj.filter(id=news_id).delete()
             return {'ret': True, 'msg': '删除成功！'}
         except Exception, e:
@@ -97,9 +107,13 @@ class EditNews:
         return new_dic
     def draft_save(self, params):
         news_id = params['news_id']
+        country = params['country']
+        school = params['school']
+        clas = params['clas']
+        keyword = clas + ',' + country + ',' + school
         news_dic = {
             'title': params['title'],
-            'keyword': params['keyword'],
+            'keyword': keyword,
             'article': params['article'],
             'update_time': self.now,
         }
@@ -108,8 +122,12 @@ class EditNews:
             return {'ret': False, 'msg': '标题不得为空！'}
         elif existObj:
             return {'ret': False, 'msg': '标题已重复！'}
-        elif not news_dic['keyword']:
-            return {'ret': False, 'msg': '关键词不得为空！'}
+        elif not params['country']:
+            return {'ret': False, 'msg': '留学国家不得为空！'}
+        elif not params['school']:
+            return {'ret': False, 'msg': '留学院校不得为空！'}
+        elif not params['clas']:
+            return {'ret': False, 'msg': '文章分类不得为空！'}
         elif not news_dic['article']:
             return {'ret': False, 'msg': '内容不得为空！'}
         else:
@@ -125,6 +143,64 @@ class EditNews:
             return {'ret': True, 'msg': '发布成功！'}
         except Exception, e:
             return {'ret': False, 'msg': '发布失败！'+str(e)}
+
+    def comment(self, params):
+        news_id = params['news_id']
+        my_id = params['my_id']
+        comment = params['comment'].strip()
+        nickname = User.objects.filter(id=my_id).values_list('nickname', flat=True).first()
+        comment_dic = {
+            'news_id': news_id,
+            'user_id': my_id,
+            'comment': comment,
+            'create_time': self.now,
+        }
+        if not comment:
+            return {'ret': False, 'msg': '评论内容不得为空！'}
+        if len(comment) > 200:
+            return {'ret': False, 'msg': '回复内容二百字以内！'}
+        else:
+            commentObj = self.commentObj.create(**comment_dic)
+            return {'ret': True, 'msg': '评论成功！', 'comment_id': commentObj.id, 'comment': commentObj.comment,
+                    'create_time': time_format(commentObj.create_time), 'nickname': nickname}
+
+    def reply_comment(self,  params, user_id):
+        comment_id = params['comment_id']
+        reply = params['reply'].strip()
+        nickname = User.objects.filter(id=user_id).values_list('nickname', flat=True).first()
+        reply_dic = {
+            'comment_id': comment_id,
+            'user_id': user_id,
+            'reply': reply,
+            'create_time': self.now,
+        }
+        if not reply:
+            return {'ret': False, 'msg': '回复内容不得为空！'}
+        if len(reply) > 200:
+            return {'ret': False, 'msg': '回复内容二百字以内！'}
+        else:
+            replyObj = self.replyObj.create(**reply_dic)
+            return {'ret': True, 'msg': '回复成功！', 'nickname': nickname , 'reply_id': replyObj.id,
+                    'create_time': time_format(replyObj.create_time), 'reply': replyObj.reply}
+
+    def delete_comment(self, comment_id, user_id):
+        commentExist = self.commentObj.filter(id=comment_id, user_id=user_id)
+        if commentExist:
+            self.replyObj.filter(comment_id=comment_id).delete()
+            commentExist.delete()
+            return {'ret': True, 'msg': '删除成功！'}
+        else:
+            return {'ret': False, 'msg': '数据异常，删除失败！'}
+
+    def delete_reply(self, reply_id, user_id):
+        replyExist = self.replyObj.filter(id=reply_id, user_id=user_id)
+        if replyExist:
+            replyExist.delete()
+            return {'ret': True, 'msg': '删除成功！'}
+        else:
+            return {'ret': False, 'msg': '数据异常，删除失败！'}
+
+
 
 # 保存草稿
 @csrf_exempt
@@ -210,4 +286,38 @@ def draft_modify_save(request):
 def draft_submit(request):
     news_id = request.POST.get('news_id')
     result = EditNews().draft_submit(news_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+# 文章评论
+@csrf_exempt
+def comment(request):
+    params = request.POST.dict()
+    result = EditNews().comment(params)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+# 回复评论
+@csrf_exempt
+def reply_comment(request):
+    params = request.POST.dict()
+    user_id = request.user.id
+    result = EditNews().reply_comment(params, user_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+# 删除评论
+@csrf_exempt
+def delete_comment(request):
+    comment_id = request.POST.get('comment_id')
+    user_id = request.user.id
+    result = EditNews().delete_comment(comment_id, user_id)
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+# 删除回复
+@csrf_exempt
+def delete_reply(request):
+    reply_id = request.POST.get('reply_id')
+    user_id = request.user.id
+    result = EditNews().delete_reply(reply_id, user_id)
     return HttpResponse(json.dumps(result), content_type='application/json')

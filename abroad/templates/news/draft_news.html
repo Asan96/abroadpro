@@ -20,11 +20,7 @@
             <h3 class="panel-title">我的草稿</h3>
         </div>
         <div class="panel-body article_panel_body_format">
-            <div class="panel panel-default article_table_div">
-                <div class="panel-body">
-                    <table id="table_my_draft" class="table table-dark article_table" style=" table-layout:fixed;"></table>
-                </div>
-            </div>
+            <table id="table_my_draft" class="table table-striped article_table table_col_line"></table>
         </div>
     </div>
     <div class="modal fade" id="modal_draft" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -43,9 +39,36 @@
                     </div>
                     <div class="input-group input_format">
                         <span>
-                            <h5>关键词：</h5>
+                            <h5>学校：</h5>
                         </span>
-                        <input type="text" class="form-control" id="draft_keyword">
+                        <div class="form-group input_article" style="padding-left: 0px;">
+                            <select class="selectpicker" data-style="btn btn-default" id="select_country">
+                                <option value="" selected> 请选择国家 </option>
+                                {% for country in countrys %}
+                                    <option value="{{ country.country }}">{{ country.country }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class="form-group input_article">
+                            <select class="selectpicker" data-style="btn btn-default" id="select_school">
+                                <option value="" selected> 请选择学校 </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group input_format">
+                        <span>
+                            <h5>类型：</h5>
+                        </span>
+                        <div class="input-group input_article" style="padding-top: 0px;padding-left: 0px">
+                            <select class="selectpicker" data-style="btn btn-default" id="select_clas">
+                                <option value="">请选择文章分类</option>
+                                {% for c in clas %}
+                                    <option value="{{ c.keyword }}">{{ c.keyword }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
                     </div>
                     <div class="input-group input_format">
                         <span>
@@ -70,6 +93,7 @@
             "dataLoadDraft": "/abroad/load_original_draft/",
             "dataModifySave": "/abroad/draft_modify_save/",
             "dataDraftSubmit": "/abroad/draft_submit/",
+            "dataSelectSchoolInit":'/abroad/select_school_init/',
         }
     </script>
     <script src="{% static "js/news/draft_news.js" %}"></script>

@@ -108,14 +108,15 @@ if __name__ == '__main__':
 
 def time_format(date):
     if date:
-        format_time = (date+datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S")
+        format_time = date.strftime("%Y-%m-%d %H:%M:%S")
         return format_time
     else:
         return ''
 
 def date_format(date):
     if date:
-        format_time = (date+datetime.timedelta(hours=8)).strftime("%Y-%m-%d")
+        format_time = date.strftime("%Y-%m-%d")
+        # format_time = (date+datetime.timedelta(hours=8)).strftime("%Y-%m-%d")
         return format_time
     else:
         return ''
