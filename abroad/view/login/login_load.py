@@ -6,13 +6,15 @@ import base64
 import random
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, HttpResponse
-from abroad.models import User
+from abroad.models import *
 from abroad.view import MyEmail
 from django.utils import timezone
 from django.contrib import auth
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 def login_page_load(request):
+    countrys = Location.objects.filter(level='2')
     return render(request, "login/login.html", locals())
 
 
@@ -38,6 +40,8 @@ def login_register(request):
     birthday = params.get('birthday', '')
     sex = params.get('sex', '')
     email = params.get('email', '')
+    country = params['country']
+    school = params['school']
     now_time =timezone.now()
     userObj = User.objects
     check_username = userObj.filter(username=username)
@@ -55,6 +59,8 @@ def login_register(request):
             'nickname': nickname,
             'password': first_password,
             'email': email,
+            'country': country,
+            'school': school,
             'date_joined': now_time,
             'update_time': now_time,
         }

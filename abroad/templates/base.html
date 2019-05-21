@@ -51,6 +51,7 @@
     </nav>
 {% endblock %}
 {% block menu %}
+    <input hidden="hidden" value="{{ user_id }}" id="input_user_id">
     <nav class="menu_div navbar-default">
         <ul class="nav nav-pills nav-stacked">
             <li class="sidebar-brand text_li text_brand">
@@ -73,42 +74,52 @@
                     <span class=" glyphicon glyphicon-list-alt"> 我的草稿</span>
                 </a>
             </li>
-            <li class="sidebar-brand text_li text_brand">
+            {% ifequal user_id 8 %}
+                <li class="sidebar-brand text_li text_brand">
+                    <a href="../manage_news" class="text_color">
+                        文章管理
+                    </a>
+                </li>
+                {% else%}
+                            <li class="sidebar-brand text_li text_brand">
                 <a href="../problem" class="text_color">
                     你问我答
                 </a>
             </li>
-            <li class="text_li">
+            <li class="text_li ">
                 <a href="../raise_question_page">
                      <span class="glyphicon glyphicon-edit"> 提出问题</span>
                 </a>
             </li>
-            <li class="text_li">
+            <li class="text_li ">
                 <a href="../my_question">
                      <span class=" glyphicon glyphicon-tags"> 我的问题</span>
                 </a>
             </li>
-            <li class="text_li">
+            <li class="text_li ">
                 <a href="../my_answer">
                     <span class=" glyphicon glyphicon-check"> 我的回答</span>
                 </a>
             </li>
-            <li class="sidebar-brand text_li text_brand">
+            <li class="sidebar-brand text_li text_brand ">
                 <a href="../communicate" class="text_color">
                     信箱
                     <span class="badge">{{ msg_count }}</span>
                 </a>
             </li>
             <li>
-                <a class="text_li" href="../my_friend">
+                <a class="text_li " href="../my_friend">
                     <span class="glyphicon glyphicon-user"> 我的好友</span>
                 </a>
             </li>
             <li>
-                <a class="text_li" href="../add_friend">
+                <a class="text_li " href="../add_friend">
                     <span class="glyphicon glyphicon-search"> 添加好友</span>
                 </a>
             </li>
+
+            {% endifequal %}
+
             <li class="sidebar-brand text_li text_brand">
                 <a href="../note" class="text_color">
                     注意事项

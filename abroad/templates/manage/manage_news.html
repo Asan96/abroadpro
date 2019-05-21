@@ -1,0 +1,17 @@
+{% extends 'news/news.html' %}
+{% load static %}
+{% block title_name %}
+    文章管理
+{% endblock %}
+{% block content %}
+    <table id="table_manage_news" class="table table-striped article_table table_col_line"></table>
+{% endblock %}
+{% block script %}
+    <script>
+        let PUB_URL ={
+            "dataDeletePush": "/abroad/delete_my_draft/",
+            "dataNewsTable": "/abroad/news_table_init/",
+        }
+    </script>
+    <script src="{% static "js/manage/manage_news.js" %}"></script>
+{% endblock %}

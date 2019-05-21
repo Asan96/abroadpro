@@ -1,3 +1,30 @@
+$(function () {
+    $('#select_country,#select_school').selectpicker({
+        size: 5
+    });
+    $('#select_country').change(function () {
+        $('#select_school').empty();
+        $('#select_school').append("<option value=''>请选择学校</option>");
+        $.ajax({
+                type: "post",
+                data: {'country':$('#select_country').val()},
+                dataType:'json',
+                url: PUB_URL.dataSelectSchoolInit,
+                success: function (data) {
+                    let school_lst = data.msg.split(',');
+                    for (let i=0;i<school_lst.length;i++){
+                        let school = school_lst[i];
+                        if (school!==''){
+                            $('#select_school').append("<option value='"+school+"'>"+school+"</option>");
+                        }
+                    }
+                    $('#select_school').selectpicker('refresh');
+                }
+            });
+    })
+
+});
+
 let reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 function alert_msg(msg){
     swal(msg, {
@@ -107,6 +134,8 @@ $('#href_register').click(function () {
             "birthday": $('#register_birth').val(),
             "sex": $('#register_sex').val(),
             "email": $('#register_email').val(),
+            "country": $('#select_country').val(),
+            "school": $('#select_school').val(),
         };
         if (params['user_id']===''||params['user_id'].length<2||params['user_id'].length>8)
         {
@@ -120,7 +149,11 @@ $('#href_register').click(function () {
             alert_msg('请按提示填写昵称！')
         }else if (params['email'] === ''){
             alert_msg('请填写邮箱，以便忘记密码后找回！')
-        } else{
+        }else if (!params['country']){
+            alert_msg('请选择留学国家！')
+        }else if (!params['school']){
+            alert_msg('请选择留学院校！')
+        }  else{
             $.ajax({
                 type : "POST",
                 url : PUB_URL.dataRegister,

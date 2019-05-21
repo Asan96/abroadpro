@@ -1,6 +1,42 @@
-let table = '#table_news'
+let table = '#table_manage_news';
 table_init();
 function table_init(){
+    window.operateEvents = {
+        'click #btn_delete': function (e, value, row, index) {
+            let news_id = row.id;
+            swal({
+                title: "操作确认",
+                text: "删除后，您将无法恢复此文章！",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "post",
+                            data: {'news_id':news_id},
+                            dataType:'json',
+                            url: PUB_URL.dataDeletePush,
+                            success: function (data) {
+                                if (data.ret){
+                                    swal(data.msg, {
+                                        icon: "success",
+                                    });
+                                    $(table).bootstrapTable('remove', {
+                                        field: 'title',
+                                        values: [row.title]
+                                    });
+                                }else{
+                                    alert_msg(data.msg)
+                                }
+                            }
+                        });
+                    } else {
+                    }
+                });
+        }
+    };
     $(table).bootstrapTable({
         url: PUB_URL.dataNewsTable,
         method: 'post',
@@ -17,9 +53,9 @@ function table_init(){
         uniqueId: "title",
         contentType: "application/x-www-form-urlencoded",
         sidePagination: "server",
-        pageSize: 10,
-        pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
-        height:500,
+        pageSize: 20,
+        pageList: [20, 30, 50, 100],        //可供选择的每页的行数（*）
+        height:660,
         pagination: true, // 是否分页
         sortable: true, // 是否启用排序
         columns: [
@@ -65,6 +101,15 @@ function table_init(){
                 align: 'center',
                 valign: 'middle',
             },
+            {
+                field: 'operate',
+                title: '操作',
+                width: 80,
+                align: 'center',
+                valign: 'middle',
+                formatter:operateFormatter,
+                events: operateEvents
+            },
         ],
     });
 }
@@ -87,4 +132,11 @@ $('#btn_search').click(function () {
 function table_refresh() {
     $('#search_word').val('');
     $(table).bootstrapTable('refresh')
+}
+function operateFormatter(value, row, index) {
+    return [
+        '<div class="btn-group">',
+        '<button id="btn_delete" type="button" class="btn btn-danger">删除</button>',
+        '</div>'
+    ].join('');
 }

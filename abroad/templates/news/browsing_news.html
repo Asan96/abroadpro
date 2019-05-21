@@ -23,6 +23,14 @@
         .span_font_article{
             font-size: 16px;
         }
+        .pre_style{
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-break:break-all;
+            overflow:hidden;
+            font-size: 16px;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -39,7 +47,9 @@
                     {{ new.keyword }}
                 </p>
             </div>
-            <article class="span_font_article">{{ new.article }}</article>
+            <article class="span_font_article">
+                <pre class="pre_style">{{ new.article }} </pre>
+            </article>
             <div style="text-align: right">
                 <p class="p_font_nickname">
                     <span class="span_font_color">发 布 人：</span>
@@ -48,16 +58,19 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default" style="border-top: 0px;border-bottom: #95999c 2px solid;">
-        <div class="panel-body" style="padding-top: 0px" >
-            <div class="input-group">
-                <input type="text" class="form-control" id="input_comment" placeholder="请输入评论内容。。。">
-                <span class="input-group-btn">
+    {% ifequal user_id 8 %}
+        {% else %}
+        <div class="panel panel-default" style="border-top: 0px;border-bottom: #95999c 2px solid;">
+            <div class="panel-body" style="padding-top: 0px" >
+                <div class="input-group">
+                    <input type="text" class="form-control" id="input_comment" placeholder="请输入评论内容。。。">
+                    <span class="input-group-btn">
             <button type="button" class="btn btn-dark" id="btn_comment"> 评 论 </button>
         </span>
+                </div>
             </div>
         </div>
-    </div>
+    {% endifequal %}
 
     <div class="form-group" style="padding-top: 0px;" id="div_all_comment">
         {% for comment in comments_lst %}

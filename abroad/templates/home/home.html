@@ -20,6 +20,27 @@
     <input type="text" hidden="hidden" value="{{ user_id }}">
 {% endblock %}
 {% block content %}
+    <div class="out_box">
+        <div class="panel panel-default">
+            <div class="panel-heading">推荐文章</div>
+            <div class="panel-body">
+                {% for new in recommend_lst %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="input-group">
+                                <p>
+                                    <a href='../browsing_news?news_id={{ new.news_id }}&nickname={{ new.news_nickname }}' target="_blank">
+                                        <span>{{ new.title }}</span>
+                                    </a>
+                                </p>
+                                <span>关键词：{{ new.keyword }}</span>
+                                <span style="padding-left: 20px">时间：{{ new.push_time }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         <nav style="padding-top: 30px;text-align: center">
             <a href="#" class="glyphicon glyphicon-earphone link_format"> 联系方式: </a>17864308135 |&nbsp;
             <a href="https:// mail.qq.com/cgi-bin/loginpage" class="glyphicon glyphicon-envelope link_format" target="_blank"> 电子邮箱: </a>1158529652@qq.com |&nbsp;
@@ -27,6 +48,7 @@
             <br>
             <p class="glyphicon glyphicon-stats link_format" style="padding-top: 10px"> @本平台解释权归版权方所有</p>
         </nav>
+    </div>
 {% endblock %}
 {% block script %}
     <script>

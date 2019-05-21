@@ -69,7 +69,7 @@ function table_init(){
         uniqueId: "question_id",
         contentType: "application/x-www-form-urlencoded",
         sidePagination: "server",
-        pageSize: 5,
+        pageSize: 10,
         pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
         height: 600,
         pagination: true, // 是否分页

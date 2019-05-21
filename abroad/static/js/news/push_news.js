@@ -107,9 +107,10 @@ function table_init(table){
     });
 }
 function href_formatter(value,row,index) {
-    let title = value;
+    let news_id = row.id;
+    let title = value
     let nickname = row.nickname;
-    let href = '../browsing_news?title='+title+'&nickname='+nickname
+    let href = '../browsing_news?news_id='+news_id+'&nickname='+nickname
     console.log(href)
     return '<a href='+href+'>'+title+'</a>'
 };

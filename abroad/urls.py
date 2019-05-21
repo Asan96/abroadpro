@@ -20,6 +20,7 @@ from view.login import login_load
 from view.news import news_load, news_main
 from view.communicate import communicate_load, communicate_main
 from view.problem import problem_load, problem_main
+from view.manage import manage
 import views
 
 urlpatterns = [
@@ -112,5 +113,10 @@ urlpatterns = [
     url(r'^browsing_question_answer_like/$', problem_main.browsing_question_answer_like, name='browsing_question_answer_like'),  # 浏览问题点赞
     # 提出问题
     url(r'^raise_question_page/$', problem_load.load_raise_question_page, name='raise_question_page'),
+
+
+    # 超级管理员
+    # 管理文章
+    url(r'^manage_news/$', manage.load_manage_news_page, name='manage_news'),
 
 ]

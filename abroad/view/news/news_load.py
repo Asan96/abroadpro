@@ -23,9 +23,9 @@ def load_browsing_page(request):
     operations, user_id, msg_count, now_nickname = public_params(request)
     params = request.GET.dict()
     nickname = params['nickname']
-    title = params['title']
-    user_id = User.objects.filter(nickname=nickname).values_list('id', flat=True).first()
-    new = News.objects.filter(user_id=user_id, title=title).first()
+    news_id = params['news_id']
+    news_user_id = User.objects.filter(nickname=nickname).values_list('id', flat=True).first()
+    new = News.objects.filter(user_id=news_user_id, id=news_id).first()
     comments = Comment.objects.filter(news_id=new.id).order_by('create_time')
     comments_lst = []
     for comment in comments:
@@ -60,6 +60,8 @@ def load_edit_page(request):
     operations, user_id, msg_count, now_nickname = public_params(request)
     countrys = Location.objects.filter(level='2')
     clas = NewsKeyword.objects.filter(type='0')
+    if request.user.username == 'admin':
+        clas =NewsKeyword.objects.filter()
     # types = NewsKeyword.objects.filter(type='1')
     return render(request, "news/edit_news.html", locals())
 

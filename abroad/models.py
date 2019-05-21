@@ -20,6 +20,8 @@ class User(AbstractUser):
     date_joined = models.DateTimeField()
     verify_msg = models.CharField(max_length=50)
     update_time = models.DateTimeField()
+    country = models.CharField(max_length=45)
+    school = models.CharField(max_length=45)
 
     class Meta:
         db_table = 'user'
