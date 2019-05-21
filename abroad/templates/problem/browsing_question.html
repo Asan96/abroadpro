@@ -25,10 +25,14 @@
 {% block content %}
     <div class="out_box">
         <div class="panel panel-danger">
-            <div class="panel-heading">
-                <span class="">问 题</span>
+            <div class="panel-heading" style="padding-bottom: 0px">
+                <p>
+                    <span style="color: #0069d9;font-size: 18px">描述：</span>
+                    <span class="span_font_article">{{ question.title }}</span>
+                </p>
             </div>
             <div class="panel-body">
+                <span style="color: #0069d9;font-size: 18px">内容:</span>
                 <article class="span_font_article">{{ question.question }}</article>
                 <div style="text-align: right">
                     <p class="p_font_nickname">
@@ -38,6 +42,10 @@
                     <p class="p_font_nickname">
                         <span class="span_font_color">时间：</span>
                         {{ question_create_time }}
+                    </p>
+                    <p class="p_font_nickname">
+                        <span class="span_font_color">分类：</span>
+                        {{ category }}
                     </p>
                 </div>
             </div>

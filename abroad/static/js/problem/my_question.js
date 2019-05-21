@@ -24,10 +24,7 @@ function table_init(){
                                     swal(data.msg, {
                                         icon: "success",
                                     });
-                                    $(table).bootstrapTable('remove', {
-                                        field: 'question_id',
-                                        values: [row.question_id]
-                                    });
+                                    $(table).bootstrapTable('refresh');
                                 }else{
                                     alert_msg(data.msg)
                                 }
@@ -74,39 +71,58 @@ function table_init(){
         sidePagination: "server",
         pageSize: 5,
         pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
-        height: 400,
+        height: 600,
         pagination: true, // 是否分页
         sortable: true, // 是否启用排序
         columns: [
             {
-                field: 'question',
-                title: '问题内容',
+                field: 'title',
+                title: '问题描述',
+                width: '60%',
                 align: 'center',
                 valign: 'middle',
-                formatter:show_formatter_question,
-                cellStyle:{
-                    css:{
-                        "overflow": "hidden",
-                        "text-overflow": "ellipsis",
-                        "white-space": "nowrap"
-                    }
-                },
+                formatter:show_formatter_title
             },
+            // {
+            //     field: 'question',
+            //     title: '问题内容',
+            //     align: 'center',
+            //     valign: 'middle',
+            //     formatter:show_formatter_question,
+            //     cellStyle:{
+            //         css:{
+            //             "overflow": "hidden",
+            //             "text-overflow": "ellipsis",
+            //             "white-space": "nowrap"
+            //         }
+            //     },
+            // },
+            // {
+            //     field: 'state',
+            //     title: '当前状态',
+            //     align: 'center',
+            //     valign: 'middle',
+            //     formatter:function (value, row, index) {
+            //         if (value ==='0')
+            //         {
+            //             return '未回答'
+            //         }else if(value === '1'){
+            //             return '已回答'
+            //         }
+            //     }
+            // },
             {
-                field: 'state',
-                title: '当前状态',
+                field: 'answer_num',
+                title: '回答数',
                 align: 'center',
                 valign: 'middle',
-                formatter:function (value, row, index) {
-                    if (value ==='0')
-                    {
-                        return '未回答'
-                    }else if(value === '1'){
-                        return '已回答'
-                    }
-                }
             },
             {
+                field: 'category',
+                title: '分类',
+                align: 'center',
+                valign: 'middle',
+            },{
                 field: 'create_time',
                 title: '提问时间',
                 align: 'center',
@@ -151,6 +167,7 @@ function table_init(){
                 field: 'answer',
                 title: '回答内容',
                 align: 'center',
+                width: '60%',
                 valign: 'middle',
                 formatter:show_formatter,
                 cellStyle:{
@@ -166,20 +183,20 @@ function table_init(){
                 align: 'center',
                 valign: 'middle',
             }, {
-                field: 'create_time',
-                title: '回答时间',
-                align: 'center',
-                valign: 'middle',
-                sortable: true,
-            },{
                 field: 'like_num',
                 title: '点赞数',
                 align: 'center',
                 valign: 'middle',
                 sortable: true,
             },{
+                field: 'create_time',
+                title: '回答时间',
+                align: 'center',
+                valign: 'middle',
+                sortable: true,
+            },{
                 field: 'like',
-                title: '点赞',
+                title: '',
                 align: 'center',
                 width: 60,
                 valign: 'middle',
@@ -196,38 +213,14 @@ function show_formatter(value,row,index) {
     return span.outerHTML;
 }
 
-function show_formatter_question(value,row,index) {
+function show_formatter_title(value,row,index) {
     let span=document.createElement('span');
     span.setAttribute('title',value);
     span.innerHTML = value;
     let href = "../browsing_question?question_id="+row.question_id;
-    return span.outerHTML, '<a href='+href+'>'+row.question+'</a>';
+    return  '<a href='+href+'>'+row.title+'</a>';
 }
 
-$('#btn_raise_question').click(function () {
-    let question = $('#input_raise_question').val();
-    if (question.length< 200){
-        $.ajax({
-            type: "post",
-            data: {'question':question},
-            dataType:'json',
-            url: PUB_URL.dataRaiseQuestion,
-            success: function (data) {
-                if (data.ret){
-                    swal(data.msg, {
-                        icon: "success",
-                    });
-                    $(table).bootstrapTable('refresh')
-                }else{
-                    alert_msg(data.msg)
-                }
-            }
-        });
-    }
-    else{
-        alert_msg('问题字数过长！')
-    }
-});
 function operateFormatter(value, row, index) {
     return [
         '<div class="btn-group">',

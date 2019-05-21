@@ -110,7 +110,7 @@ urlpatterns = [
     # 浏览问题
     url(r'^browsing_question/$', problem_load.load_browsing_question_page, name='browsing_question'),
     url(r'^browsing_question_answer_like/$', problem_main.browsing_question_answer_like, name='browsing_question_answer_like'),  # 浏览问题点赞
-
-
+    # 提出问题
+    url(r'^raise_question_page/$', problem_load.load_raise_question_page, name='raise_question_page'),
 
 ]

@@ -82,9 +82,12 @@ class Message(models.Model):
 
 class Question(models.Model):
     user_id = models.IntegerField()
+    title = models.CharField(max_length=400)
     question = models.CharField(max_length=400)
     state = models.CharField(max_length=1)
     create_time = models.DateTimeField()
+    category_id = models.IntegerField()
+    answer_num = models.IntegerField()
 
     class Meta:
         db_table = 'question'
@@ -149,3 +152,10 @@ class ReplyComment(models.Model):
 
     class Meta:
         db_table = 'reply_comment'
+
+
+class QuestionCategory(models.Model):
+    category = models.CharField(max_length=45)
+
+    class Meta:
+        db_table = 'question_category'

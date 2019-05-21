@@ -38,9 +38,13 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <a href="../browsing_question?question_id={{ my_answer.question_id }}">
-                            <span class="span_font_color">问 题：</span>
-                            {{ my_answer.question }}
+                            <span class="span_font_color" style="font-size: 18px">问题描述：</span>
+                            {{ my_answer.question_title }}
                         </a>
+                        <p style="padding-top: 10px;">
+                            <span class="span_font_color" style="font-size: 16px">内容：</span>
+                            <span>{{ my_answer.question }}</span>
+                        </p>
                         <div style="text-align: right">
                             <p class="p_font_nickname">
                                 <span class="span_font_color">时间：</span>
@@ -49,6 +53,10 @@
                             <p class="p_font_nickname">
                                 <span class="span_font_color">提问人：</span>
                                 {{ my_answer.question_nickname }}
+                            </p>
+                            <p class="p_font_nickname">
+                                <span class="span_font_color">分类：</span>
+                                {{ my_answer.category }}
                             </p>
                         </div>
                     </h3>

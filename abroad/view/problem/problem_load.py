@@ -15,6 +15,39 @@ from abroad.views import *
 @csrf_exempt
 def load_problem_page(request):
     operations, user_id, msg_count, now_nickname = public_params(request)
+    categorys = QuestionCategory.objects.filter()
+    # questions = Question.objects.filter()
+    # question_lst = []
+    # for question in questions:
+    #     answer_lst = []
+    #     question_nickname = User.objects.filter(id=question.user_id).values_list('nickname', flat=True).first()
+    #     category = QuestionCategory.objects.filter(id=question.category_id).values_list('category', flat=True).first()
+    #     answers = Answer.objects.filter(question_id=question.id)
+    #     for answer in answers:
+    #         like_user_id_lst = LikeAnswer.objects.filter(answer_id=answer.id).values_list('user_id', flat=True)
+    #         like_nickname_lst = User.objects.filter(id__in=like_user_id_lst).values_list('nickname', flat=True)
+    #         answer_nickname = User.objects.filter(id=answer.user_id).values_list('nickname', flat=True).first()
+    #         answer_dic = {
+    #             'answer_id': answer.id,
+    #             'answer_nickname': answer_nickname,
+    #             'like_num': answer.like_num,
+    #             'answer_time': time_format(answer.create_time),
+    #             'answer': answer.answer,
+    #             'like_lst': str(like_nickname_lst),
+    #         }
+    #         answer_lst.append(answer_dic)
+    #     question_dic = {
+    #         'question_nickname': question_nickname,
+    #         'title': question.title,
+    #         'question': question.question,
+    #         'state': '未解答' if question.state == '0' else '已解答',
+    #         'question_time': time_format(question.create_time),
+    #         'categroy': category,
+    #         'answer_num': question.answer_num,
+    #         'answer': answer_lst,
+    #     }
+    #     question_lst.append(question_dic)
+
     return render(request, "problem/problem.html", locals())
 
 
@@ -35,13 +68,15 @@ def load_my_answer_page(request):
     my_answer_lst = []
     for answer in answers:
         other_answer_lst = []
-        question = Question.objects.filter(id=answer.question_id).values('question', 'user_id').first()
+        question = Question.objects.filter(id=answer.question_id).values().first()
         question_nickname = User.objects.filter(id=question['user_id']).values_list('nickname',flat=True).first()
         answer_dic = {
             'question_nickname': question_nickname,
             'answer_id': answer.id,
             'question_id': answer.question_id,
             'question': question['question'],
+            'question_title': question['title'],
+            'category': QuestionCategory.objects.filter(id=question['category_id']).values_list('category', flat=True).first(),
             'create_time': time_format(answer.create_time),
             'answer': answer.answer,
             'like_num': answer.like_num,
@@ -57,6 +92,7 @@ def load_browsing_question_page(request):
     operations, user_id, msg_count, now_nickname = public_params(request)
     question_id = request.GET.get('question_id')
     question = Question.objects.filter(id=question_id).first()
+    category = QuestionCategory.objects.filter(id=question.category_id).values_list('category', flat=True).first()
     question_create_time = time_format(question.create_time)
     question_nickname = User.objects.filter(id=question.user_id).values_list('nickname', flat=True).first()
     answers = Answer.objects.filter(question_id=question_id).order_by('-like_num')
@@ -76,5 +112,13 @@ def load_browsing_question_page(request):
         }
         answer_lst.append(answer_dic)
     return render(request, "problem/browsing_question.html", locals())
+
+
+@login_required
+@csrf_exempt
+def load_raise_question_page(request):
+    operations, user_id, msg_count, now_nickname = public_params(request)
+    categories = QuestionCategory.objects.values()
+    return render(request, "problem/raise_question.html", locals())
 
 

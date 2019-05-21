@@ -8,6 +8,7 @@ from django.shortcuts import render, HttpResponse
 from abroad.models import *
 from django.utils import timezone
 from abroad.view import *
+from django.db.models import Q
 
 import json
 
@@ -18,6 +19,7 @@ class ProblemManage(object):
         self.answerObj = Answer.objects
         self.userObj = User.objects
         self.likeObj = LikeAnswer.objects
+        self.categoryObj = QuestionCategory.objects
         self.question_state_dic = {
             'unAnswer': '0',
             'answer': '1'
@@ -28,15 +30,22 @@ class ProblemManage(object):
         }
         self.now = timezone.now()
 
-    def raise_question(self, user_id, question):
-        question = question.strip()
-        if not question:
-            return {'ret': False, 'msg': '问题内容不得为空！'}
+    def raise_question(self, params, user_id):
+        question = params['question'].strip()
+        category_id = params['category_id']
+        title = params['title'].strip()
+        if not title:
+            return {'ret': False, 'msg': '问题描述不得为空！'}
+        if not category_id:
+            return {'ret': False, 'msg': '问题分类不得为空！'}
         question_dic = {
             'user_id': user_id,
+            'title': title,
             'question': question,
             'state': self.question_state_dic['unAnswer'],
-            'create_time': self.now
+            'create_time': self.now,
+            'category_id': category_id,
+            'answer_num': 0,
         }
         try:
             self.questionObj.create(**question_dic)
@@ -44,18 +53,22 @@ class ProblemManage(object):
         except Exception, e:
             return {'ret': False, 'msg': '出错了！'+str(e)}
 
-    def my_question_table_init(self, user_id):
+    def my_question_table_init(self, user_id, limit, offset):
         question_lst = []
-        questions = self.questionObj.filter(user_id=user_id)
+        total = self.questionObj.filter(user_id=user_id).count()
+        questions = self.questionObj.filter(user_id=user_id)[offset:limit+offset]
         for question in questions:
             question_dic = {
                 'question_id': question.id,
                 'question': question.question,
+                'title': question.title,
                 'state': question.state,
+                'category': self.categoryObj.filter(id=question.category_id).values_list('category', flat=True).first(),
                 'create_time': time_format(question.create_time),
+                'answer_num': question.answer_num,
             }
             question_lst.append(question_dic)
-        return len(question_lst), question_lst
+        return total, question_lst
 
     def my_question_child_table_init(self, question_id, user_id, params):
         answer_lst = []
@@ -100,14 +113,14 @@ class ProblemManage(object):
         limit = params['limit']
         offset = params['offset']
         search_word = params['search_word']
-        state = params['state']
+        category_id = params['category_id']
         sort = params.get('sort', '')
         order = params.get('sortOrder', '')
-        questionObj = self.questionObj.exclude(user_id=user_id)
-        if state:
-            questionObj = questionObj.filter(state=state)
+        questionObj = self.questionObj
+        if category_id:
+            questionObj = questionObj.filter(category_id=category_id)
         if search_word:
-            questionObj = questionObj.filter(question__icontains=search_word)
+            questionObj = questionObj.filter(Q(question__icontains=search_word) | Q(title__icontains=search_word))
         if sort:
             if order == 'asc':
                 questionObj = questionObj.order_by(sort)
@@ -119,10 +132,13 @@ class ProblemManage(object):
             user = self.userObj.filter(id=question['user_id']).first()
             question_dic = {
                 'question_id': question['id'],
+                'title': question['title'],
                 'nickname': user.nickname,
                 'question': question['question'],
                 'state': self.question_cn_state_dic[question['state']],
-                'create_time': time_format(question['create_time'])
+                'category': self.categoryObj.filter(id=question['category_id']).values_list('category', flat=True).first(),
+                'create_time': time_format(question['create_time']),
+                'answer_num': question['answer_num']
             }
             question_lst.append(question_dic)
         return total, question_lst
@@ -143,7 +159,8 @@ class ProblemManage(object):
             'create_time': self.now,
             'answer': answer,
         }
-        self.questionObj.filter(id=question_id).update(state=self.question_state_dic['answer'])
+        answer_num = self.questionObj.filter(id=question_id).values_list('answer_num', flat=True).first()
+        self.questionObj.filter(id=question_id).update(state=self.question_state_dic['answer'], answer_num=answer_num+1)
         self.answerObj.create(**answer_dict)
         return {'ret': True, 'msg': '回答成功！'}
 
@@ -198,6 +215,8 @@ class ProblemManage(object):
             try:
                 self.likeObj.filter(answer_id=answer_id).delete()
                 answerExist.delete()
+                answer_num = self.questionObj.filter(id=question_id).values_list('answer_num', flat=True).first()
+                self.questionObj.filter(id=question_id).update(answer_num=answer_num-1)
                 has_answer = self.answerObj.filter(question_id=question_id)
                 if not has_answer:
                     self.questionObj.filter(id=question_id).update(state=self.question_state_dic['unAnswer'])
@@ -207,12 +226,13 @@ class ProblemManage(object):
         else:
             return {'ret': False, 'msg': '未找到该条回答！'}
 
+
 # 提出问题
 @csrf_exempt
 def raise_question(request):
     user_id = request.user.id
-    question = request.POST.get('question')
-    result = ProblemManage().raise_question(user_id, question)
+    params = request.POST.dict()
+    result = ProblemManage().raise_question(params, user_id)
     return HttpResponse(json.dumps(result), content_type='application/json')
 
 
@@ -223,9 +243,8 @@ def my_question_table_init(request):
     limit = int(params['limit'])
     offset = int(params['offset'])
     user_id = request.user.id
-    total, rows = ProblemManage().my_question_table_init(user_id)
-    rows_lst = rows[offset:limit+offset]
-    return HttpResponse(json.dumps({'total': total, 'rows': rows_lst}))
+    total, rows = ProblemManage().my_question_table_init(user_id, limit, offset)
+    return HttpResponse(json.dumps({'total': total, 'rows': rows}))
 
 
 # 问题子表: 回答表

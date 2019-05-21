@@ -1,5 +1,6 @@
 let table = '#table_question';
 let table_child = [];
+console.log($('#select_category').val())
 table_init();
 function table_init(){
     window.operateEvents = {
@@ -8,7 +9,7 @@ function table_init(){
             $('#btn_answer_submit').unbind().click(function () {
                 let params = {
                     'question_id':row.question_id,
-                    'answer': $('#text_answer').val()
+                    'answer': $('#text_answer').val(),
                 };
                 $.ajax({
                     type: "post",
@@ -59,7 +60,7 @@ function table_init(){
                 sort: params.sort,      //排序列名
                 sortOrder: params.order, //排位命令（desc，asc）
                 search_word: $('#input_search_word').val(),
-                state: $('#select_state').val(),
+                category_id: $('#select_category').val(),
             }
         },
         toolbar: "#toolbar",
@@ -70,50 +71,48 @@ function table_init(){
         sidePagination: "server",
         pageSize: 10,
         pageList: [10, 15, 20, 30],        //可供选择的每页的行数（*）
-        height: 540,
+        height: 500,
         pagination: true, // 是否分页
         sortable: true, // 是否启用排序
         columns: [
+            {   field: 'category',
+                title: '分类',
+                align: 'center',
+                valign: 'middle',
+            },
+            {   field: 'title',
+                title: '问题描述',
+                width: '60%',
+                align: 'center',
+                valign: 'middle',
+                formatter:href_formatter
+            },
             {
                 field: 'nickname',
                 title: '提问人',
                 align: 'center',
                 valign: 'middle',
             },
-            {
-                field: 'question',
-                title: '问题',
-                align: 'center',
-                valign: 'middle',
-                formatter:show_formatter,
-                cellStyle:{
-                    css:{
-                        "overflow": "hidden",
-                        "text-overflow": "ellipsis",
-                        "white-space": "nowrap"
-                    }
-                },
-            },
-            {
-                field: 'state',
-                title: '回答状态',
-                align: 'center',
-                valign: 'middle',
-            },
+            // {
+            //     field: 'question',
+            //     title: '问题',
+            //     align: 'center',
+            //     valign: 'middle',
+            //     formatter:show_formatter,
+            //     cellStyle:{
+            //         css:{
+            //             "overflow": "hidden",
+            //             "text-overflow": "ellipsis",
+            //             "white-space": "nowrap"
+            //         }
+            //     },
+            // },
             {
                 field: 'create_time',
                 title: '提问时间',
                 align: 'center',
                 valign: 'middle',
                 sortable: true,
-            },
-            {
-                field: 'browsing_question',
-                title: '查看',
-                width: 80,
-                align: 'center',
-                valign: 'middle',
-                formatter:href_formatter
             },
             {
                 field: 'operate',
@@ -153,6 +152,7 @@ InitSubTable = function (index, row, $detail) {
             field: 'answer',
             title: '回答内容',
             align: 'center',
+            width: '60%',
             valign: 'middle',
             formatter:show_formatter,
             cellStyle:{
@@ -165,8 +165,16 @@ InitSubTable = function (index, row, $detail) {
         }, {
             field: 'nickname',
             title: '回答人',
+            width:'10%',
             align: 'center',
             valign: 'middle',
+        }, {
+            field: 'like_num',
+            title: '点赞数',
+            width: '10%',
+            align: 'center',
+            valign: 'middle',
+            sortable: true,
         }, {
             field: 'create_time',
             title: '回答时间',
@@ -174,12 +182,6 @@ InitSubTable = function (index, row, $detail) {
             valign: 'middle',
             sortable: true,
         },{
-            field: 'like_num',
-            title: '点赞数',
-            align: 'center',
-            valign: 'middle',
-            sortable: true,
-        }, {
             field: 'like',
             title: '点赞',
             align: 'center',
@@ -200,7 +202,7 @@ function show_formatter(value,row,index) {
 function href_formatter(value,row,index) {
     let question_id = row.question_id;
     let href = '../browsing_question?question_id='+question_id;
-    return '<a href='+href+'>查 看</a>'
+    return '<a href='+href+'>'+row.title+'</a>'
 };
 function operateFormatter(value, row, index) {
     return [
@@ -228,20 +230,17 @@ function formatterLike(value, row, index) {
         ].join('');
     }
 }
-function clear_parent_table(){
-    $('#input_search_word').val('');
-    $('#select_state').selectpicker('val','');
-}
 function refresh_parent_table(){
     $(table).bootstrapTable('refresh')
 }
-$('#btn_clear').click(function () {
-    clear_parent_table()
-});
 $('#btn_search').click(function () {
     refresh_parent_table()
 });
-$('#btn_refresh').click(function () {
-    clear_parent_table();
-    refresh_parent_table
+$('#btn_raise_question').click(function () {
+    location.href="../raise_question_page"
 });
+$('#select_category').change(
+    function () {
+        refresh_parent_table();
+    }
+);
